@@ -27,13 +27,19 @@ public class Constants implements Observer {
      * Constructor for Constants -- will eventually find out my IP address and do other nice
      * things that need to be set up in the constants file.
      */
-    private Constants(){
+    private Constants()
+    {
         // call the local method to get the IP address of this device.
         IP_ADDRESS = getLocalIpAddress();
-        int lastDot = IP_ADDRESS.lastIndexOf(".");
-        int secondDot = IP_ADDRESS.substring(0, lastDot-1).lastIndexOf(".");
-        IP_ADDRESS_PREFIX = IP_ADDRESS.substring(0, secondDot+1);
-        Log.e("IP: ", IP_ADDRESS);
+        if(IP_ADDRESS != null)
+        {
+            int lastDot = IP_ADDRESS.lastIndexOf(".");
+            int secondDot = IP_ADDRESS.substring(0, lastDot - 1).lastIndexOf(".");
+            IP_ADDRESS_PREFIX = IP_ADDRESS.substring(0, secondDot + 1);
+            Log.e("IP: ", IP_ADDRESS);
+        }
+        else
+            Log.e("IP: ", "IP address not found");
     }
 
     /**
