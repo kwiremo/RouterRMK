@@ -66,6 +66,8 @@ public class Constants implements Observer {
         return null;
     }
 
+    //THe update method is called by an observable to which this obsever is registered when
+    // the observable changes.
     @Override
     public void update(Observable observable, Object o) {
     }
