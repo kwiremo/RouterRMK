@@ -12,7 +12,9 @@ import java.util.Observer;
 /**
  * Created by Rene Moise on 1/7/2017.
  */
-
+/*
+ * This class will contain all constants.
+ */
 public class Constants implements Observer {
     private static Constants ourInstance = new Constants();
     public static Constants getInstance() {

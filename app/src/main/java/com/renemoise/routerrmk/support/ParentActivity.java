@@ -5,6 +5,10 @@ import android.app.Activity;
 /**
  * Created by Rene Moise on 1/7/2017.
  */
+
+/**
+ *The parent activity gives an easy access to mainActivity context.
+ */
 public class ParentActivity {
     private static Activity mainActivity;
     //Singleton classes are instantiated once.

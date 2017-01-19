@@ -1,5 +1,7 @@
 package com.renemoise.routerrmk.support;
 import android.app.Activity;
+
+import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
 import java.util.Observable;
 
@@ -7,6 +9,10 @@ import java.util.Observable;
  * Created by Rene Moise on 1/7/2017.
  */
 
+/*
+    The booloader will be called by the mainActivity when the app starts to initialize all the
+    constants. It will notify the observers that it completed doing its work.
+ */
 public class BootLoader extends Observable {
 
     public BootLoader(Activity parenttActivity)

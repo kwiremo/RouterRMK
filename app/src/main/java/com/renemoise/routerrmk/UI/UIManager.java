@@ -12,6 +12,11 @@ import java.util.Observer;
 /**
  * Created by Rene Moise on 1/18/2017.
  */
+
+/*
+ * UI manager will provides overall control of the UI portion of the system and delegates specific
+ * UI management to lower level UI classes.
+ */
 public class UIManager implements Observer {
     private static UIManager ourInstance = new UIManager();
     public static UIManager getInstance() {

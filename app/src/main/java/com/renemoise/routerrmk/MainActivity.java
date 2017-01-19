@@ -8,7 +8,7 @@ import android.view.MenuItem;
 
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.support.BootLoader;
-import com.renemoise.routerrmk.support.UIManager;
+import com.renemoise.routerrmk.UI.UIManager;
 
 public class MainActivity extends AppCompatActivity {
 
