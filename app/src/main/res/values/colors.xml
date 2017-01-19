@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="titleBackGroundColor">#404040</color>
+    <color name="bodyTitleBackgroundClor">#606060</color>
+    <color name="titleColor">#E0E0E0</color>
+    <color name="bodyBackgroundColor">#A0A0A0</color>
+    <color name="bodyColor">#E0E0E0</color>
+
 </resources>

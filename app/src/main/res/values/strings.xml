@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">RouterRMK</string>
+    <string name="router_name"><b>Rene Moise\' s Router</b></string>
+    <string name="IPMenuItem">IP Menus</string>
+    <string name="frame_list">Summary Frame List</string>
+    <string name="LL2P">LL2P</string>
+    <string name="internal_tables">Internal Tables</string>
+    <string name="adjancency_table">Adjacency Table</string>
+    <string name="ARP_table">ARP Table</string>
+    <string name="routing_table">Routing Table</string>
+    <string name="forwarding_table">Forwarding Table</string>
+    <string name="blank_data"> </string>
 </resources>

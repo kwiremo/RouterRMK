@@ -18,9 +18,11 @@ public class BootLoader extends Observable {
     {
         ParentActivity.setParentActivity(parentActivity);
         addObserver(Constants.getInstance());
+        addObserver(UIManager.getInstance());
         setChanged();       //setChanged marks this observer as has been changed.
         notifyObservers();  // Notify Observers things have changed. Automatically calls the
                             //clearchanged that set the observer as not changed.
+        UIManager.getInstance().disPlayMessage("Now let's roll! RouterRMK is app and running!");
     }
 
     //THe update method is called by an observable to which this obsever is registered when

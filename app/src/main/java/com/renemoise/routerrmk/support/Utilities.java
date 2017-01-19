@@ -1,8 +1,5 @@
 package com.renemoise.routerrmk.support;
 
-import java.util.Observable;
-import java.util.Observer;
-
 /**
  * Created by Rene Moise on 1/7/2017.
  */

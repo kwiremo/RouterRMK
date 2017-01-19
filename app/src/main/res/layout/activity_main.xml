@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -8,10 +11,273 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context="com.renemoise.routerrmk.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:text="@string/router_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/idRouterNameTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/titleColor"
+        android:background="@color/titleBackGroundColor"
+        android:textAlignment="center"
+        android:textSize="@dimen/titleTextSize"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="396dp"
+        android:layout_marginEnd="396dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/idSniffer"
+        android:layout_below="@+id/idRouterNameTextView">
+
+        <TextView
+            android:text="@string/frame_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentTop="true"
+            android:id="@+id/idSummaryTitle"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/bodyColor"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="@dimen/bodyTitleTextSize"
+            android:background="@color/bodyTitleBackgroundClor"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/idSummaryTitle"
+            android:background="@color/bodyBackgroundColor"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/tableSeparations"
+            android:layout_above="@+id/idLL2PInformationTextView"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/idSnifferListView" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tablesDimension"
+            android:background="@color/bodyBackgroundColor"
+            android:id="@+id/idLL2PInformationTextView"
+            android:layout_above="@+id/idHexContentsTextView"
+
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/tablesDimension"
+            android:background="@color/bodyBackgroundColor"
+            android:id="@+id/idHexContentsTextView"
+            android:layout_marginTop="@dimen/tableSeparations"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/idTables"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="779dp"
+        android:layout_marginStart="779dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/idRouterNameTextView">
+
+        <TextView
+            android:text="@string/internal_tables"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/idTableTextView"
+            android:textAlignment="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/bodyColor"
+            android:textSize="@dimen/bodyTitleTextSize"
+            android:background="@color/bodyTitleBackgroundClor"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tablesDimension"
+            android:layout_marginTop="5dp"
+            android:id="@+id/idRelativeAdjacenyTable"
+            android:layout_below="@+id/idTableTextView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:text="@string/adjancency_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="10dp"
+                android:id="@+id/idAdjacencyTextView"
+                android:textColor="@color/titleColor"
+                android:background="@color/bodyTitleBackgroundClor"
+                android:textAlignment="center"
+                android:textSize="@dimen/internalTablesTextSize"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/idAdjacencyTextView"
+                android:layout_marginRight="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/bodyBackgroundColor"
+                android:id="@+id/idAdjacencyTableListView" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/idRelativeAdjacenyTable"
+            android:layout_height="@dimen/tablesDimension"
+            android:layout_marginTop="@dimen/tableSeparations"
+            android:id="@+id/idRelativeARPTable"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:text="@string/ARP_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
+                android:id="@+id/idARPTextView"
+                android:textColor="@color/titleColor"
+                android:background="@color/bodyTitleBackgroundClor"
+                android:textAlignment="center"
+                android:textSize="@dimen/internalTablesTextSize"/>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/idARPTextView"
+                android:layout_marginBottom="0dp"
+                android:background="@color/bodyBackgroundColor"
+                android:id="@+id/idARPListView" />
+        </RelativeLayout>
+
+        <RelativeLayout
+
+
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tablesDimension"
+            android:layout_marginTop="@dimen/tableSeparations"
+            android:id="@+id/idRelativeRoutingTable"
+            android:layout_below="@+id/idRelativeARPTable"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:text="@string/routing_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:id="@+id/idRoutingTableTextView"
+                android:textColor="@color/titleColor"
+                android:background="@color/bodyTitleBackgroundClor"
+                android:textAlignment="center"
+                android:textSize="@dimen/internalTablesTextSize"/>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/idRoutingTableTextView"
+                android:background="@color/bodyBackgroundColor"
+                android:id="@+id/idRoutingTableListView" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tablesDimension"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/tableSeparations"
+            android:layout_below="@+id/idRelativeRoutingTable"
+            android:id="@+id/idRelativeForwardingTable">
+
+            <TextView
+                android:text="@string/forwarding_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
+                android:id="@+id/idFowardingTextView"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+
+                android:textColor="@color/titleColor"
+                android:background="@color/bodyTitleBackgroundClor"
+                android:textAlignment="center"
+                android:textSize="@dimen/internalTablesTextSize"/>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/idFowardingTextView"
+                android:background="@color/bodyBackgroundColor"
+                android:id="@+id/idForwardingListView" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 </RelativeLayout>
