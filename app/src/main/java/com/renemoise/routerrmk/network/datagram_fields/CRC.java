@@ -29,6 +29,14 @@ public class CRC implements DatagramHeaderField {
 
     @Override
     public String toAsciiString() {
-        return null;
+
+        StringBuilder crcAscii = new StringBuilder();
+        char [] crcValueChar = crcValue.toCharArray();
+
+        for(int i = 0; i < crcValue.length(); i++)
+        {
+            crcAscii.append((int)crcValueChar[i]);
+        }
+        return crcAscii.toString();
     }
 }
