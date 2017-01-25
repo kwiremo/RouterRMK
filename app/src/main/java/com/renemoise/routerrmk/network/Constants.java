@@ -73,4 +73,11 @@ public class Constants implements Observer {
     @Override
     public void update(Observable observable, Object o) {
     }
+
+    //LL2P Constants
+    public  final int LL2P_DESTINATION_ADDRESS = 1; //this contains the integer value of the address.
+    public final int LL2P_SOURCE_ADDRESS = 2; //true if the contained address is a source address.
+    public final int LL2P_TYPE_FELD = 3;
+    public final int LL2P_PAYLOAD_FIELD = 4;
+    public final int LL2P_CRC_FIELD = 5;
 }

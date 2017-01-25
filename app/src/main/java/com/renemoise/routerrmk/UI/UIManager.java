@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.renemoise.routerrmk.support.BootLoader;
 import com.renemoise.routerrmk.support.ParentActivity;
 
 import java.util.Observable;
@@ -48,7 +49,11 @@ public class UIManager implements Observer {
     //This class observes the bootloader. It is notified when something changes in the bootloader.
     @Override
     public void update(Observable observable, Object o) {
-        parentActivity = ParentActivity.getParentActivity();
-        context = parentActivity.getBaseContext();
+
+        if(observable.getClass() == BootLoader.class) {
+            parentActivity = ParentActivity.getParentActivity();
+            context = parentActivity.getBaseContext();
+            setUpWidgets();
+        }
     }
 }
