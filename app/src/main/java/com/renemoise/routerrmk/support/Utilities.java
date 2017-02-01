@@ -2,6 +2,8 @@ package com.renemoise.routerrmk.support;
 
 /**
  * Created by Rene Moise on 1/7/2017.
+ *
+ * It will function as a holding place for methods that are broadly used.
  */
 
 public class Utilities {

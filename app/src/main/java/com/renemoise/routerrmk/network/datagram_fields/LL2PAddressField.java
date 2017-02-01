@@ -1,10 +1,15 @@
 package com.renemoise.routerrmk.network.datagram_fields;
 
+import android.util.Log;
+
 import com.renemoise.routerrmk.support.LabException;
 import com.renemoise.routerrmk.support.Utilities;
 
 /**
  * Created by Rene Moise on 1/22/2017.
+ *
+ * This class implements the datagramHeaderField interface and it is the address field of a
+ * datagram.
  */
 
 public class LL2PAddressField implements DatagramHeaderField {
@@ -18,7 +23,7 @@ public class LL2PAddressField implements DatagramHeaderField {
     // it might contain the string “Source LL2P Address: 0x314159”.
     private String explanation;
 
-    public LL2PAddressField(Integer address, boolean isSourceAddress) {
+    public LL2PAddressField(int address, boolean isSourceAddress) {
         this.address = address;
         this.isSourceAddress = isSourceAddress;
     }
@@ -26,7 +31,8 @@ public class LL2PAddressField implements DatagramHeaderField {
     public LL2PAddressField(String address, boolean isSourceAddress) {
         try
         {
-            new LL2PAddressField(Integer.parseInt(address),  isSourceAddress);
+            this.address = (Integer.valueOf(address,16));
+            this.isSourceAddress =  isSourceAddress;
         }
         catch (NumberFormatException e)
         {
@@ -36,7 +42,7 @@ public class LL2PAddressField implements DatagramHeaderField {
 
     @Override
     public String toString() {
-        return explainSelf();
+        return toHexString();
     }
 
     @Override
@@ -54,7 +60,16 @@ public class LL2PAddressField implements DatagramHeaderField {
     //This is not supposed to be implemented in this class.
     @Override
     public String toAsciiString() {
-       return null;
+        String hexValue = toHexString();
+        StringBuilder asciiValue = new StringBuilder();
+
+        for(int i = 0; i < hexValue.length()/2; i++)
+        {
+            int subLen = 2;
+            int temp = Integer.valueOf(hexValue.substring(i*subLen, (i*subLen)+subLen),16);
+            asciiValue.append(((char)temp));
+        }
+       return asciiValue.toString();
     }
 
     public void setExplanation() {
@@ -64,7 +79,7 @@ public class LL2PAddressField implements DatagramHeaderField {
         else
             explanation = explanation + " Destination Address";
 
-        explanation = explanation + "Value = " + address;
+        explanation = explanation + "Value = " + toHexString();
     }
 
     //Still needs implementation

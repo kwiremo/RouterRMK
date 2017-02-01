@@ -1,5 +1,6 @@
 package com.renemoise.routerrmk.support;
 
+import com.renemoise.routerrmk.UI.SnifferUI;
 import com.renemoise.routerrmk.network.datagrams.LL1Daemon;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
 
@@ -9,6 +10,11 @@ import java.util.Observer;
 
 /**
  * Created by Rene Moise on 1/22/2017.
+ *  the FrameLogger class which is Observable by the SnifferUI and observes both the LL1Daemon
+ *  and the bootloader.  It has a very simply job of keeping a list of LL2PFrames and notifying
+ *  the SnifferUI whenever that list changes
+ *  It adds itself to the LL1Daemon class.
+ *
  */
 public class FrameLogger extends Observable implements Observer  {
     private static FrameLogger ourInstance = new FrameLogger();
@@ -36,6 +42,9 @@ public class FrameLogger extends Observable implements Observer  {
     public void update(Observable observable, Object o) {
         if(observable.getClass() == BootLoader.class){
             //add Sniffer UI to the list of observers.
+            addObserver(SnifferUI.getInstance());
+            LL1Daemon.getInstance().addObserver(this);
+
         }
         else if(observable.getClass() == LL1Daemon.class){
             frameList.add((LL2PFrame) o);

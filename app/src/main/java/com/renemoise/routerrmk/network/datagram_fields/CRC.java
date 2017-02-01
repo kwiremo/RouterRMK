@@ -1,9 +1,12 @@
 package com.renemoise.routerrmk.network.datagram_fields;
 
+import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramHeaderField;
 
 /**
  * Created by Rene Moise on 1/22/2017.
+ *
+ * This class calculates the CRC value that will be used for error checking purposes.
  */
 
 public class CRC implements DatagramHeaderField {
@@ -14,17 +17,26 @@ public class CRC implements DatagramHeaderField {
     //This is a constructor that works with a passed String. Truncate the string to 2 bytes
     // (4 hex characters) and store it.
     public CRC(String crcValue) {
-        this.crcValue = crcValue;
+        this.crcValue = crcValue.substring(0, Constants.LL2P_CRC_FIELD_LENGTH*2);
+
     }
 
     @Override
     public String toHexString() {
-        return null;
+
+        StringBuilder hexValue = new StringBuilder();
+
+        for(int i = 0; i < crcValue.length(); i++)
+        {
+            int asciiValue = (int)crcValue.charAt(i);
+            hexValue.append(Integer.toHexString(asciiValue));
+        }
+        return hexValue.toString();
     }
 
     @Override
     public String explainSelf() {
-        return null;
+        return String.format("CRC Field. Value: " + toAsciiString());
     }
 
     @Override
@@ -38,5 +50,10 @@ public class CRC implements DatagramHeaderField {
             crcAscii.append((int)crcValueChar[i]);
         }
         return crcAscii.toString();
+    }
+
+    @Override
+    public String toString() {
+        return toHexString();
     }
 }

@@ -4,6 +4,8 @@ import com.renemoise.routerrmk.support.LabException;
 
 /**
  * Created by Rene Moise on 1/22/2017.
+ * The datagramHeaderField interface serves as a trmplate for the datagram header fields. All the
+ * fields of a datagram will implement this interface.
  */
 
 public interface DatagramHeaderField {

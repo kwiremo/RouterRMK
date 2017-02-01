@@ -74,10 +74,32 @@ public class Constants implements Observer {
     public void update(Observable observable, Object o) {
     }
 
-    //LL2P Constants
-    public  final int LL2P_DESTINATION_ADDRESS = 1; //this contains the integer value of the address.
-    public final int LL2P_SOURCE_ADDRESS = 2; //true if the contained address is a source address.
-    public final int LL2P_TYPE_FELD = 3;
-    public final int LL2P_PAYLOAD_FIELD = 4;
-    public final int LL2P_CRC_FIELD = 5;
+    //LL2P CONSTANTS
+    //LL2P Fields
+    public static final int LL2P_DESTINATION_ADDRESS = 1; //this contains the integer value of the address.
+    public static final int LL2P_SOURCE_ADDRESS = 2; //true if the contained address is a source address.
+    public static final int LL2P_TYPE_FELD = 3;
+    public static final int LL2P_PAYLOAD_FIELD = 4;
+    public static final int LL2P_CRC_FIELD = 5;
+    public static final String LL2P_ROUTER_ADDRESS_VALUE = "261995";
+
+    //LL2P FIELD LENGTH IN BYTES
+    public  static final int LL2P_DEST_ADDRESS_OFFSET = 0;
+    public  static final int LL2P_DEST_ADD_FIELD_LENGTH = 3;
+    public  static final int LL2P_SOURCE_ADDRESS_OFFSET = 3;
+    public  static final int LL2P_SOURCE_ADDRESS_FIELD_LENGTH = 3;
+    public  static final int LL2P_TYPE_FIELD_OFFSET = 6;
+    public  static final int LL2P_TYPE_FIELD_LENGTH = 2;
+    public  static final int LL2P_PAYLOAD_OFFSET = 8;
+    public  static final int LL2P_CRC_FIELD_LENGTH = 2;
+
+    //PROTOCOL INFORMATION
+    public static final int LL2P_TYPE_IS_LL3P = 0x8001;
+    public static final int LL2P_TYPE_IS_RESERVED = 0x8002;
+    public static final int LL2P_TYPE_IS_LRP = 0x8003;
+    public static final int LL2P_TYPE_IS_ECHO_REQUEST = 0x8004;
+    public static final int LL2P_TYPE_IS_ECHO_REPLY = 0x8005;
+    public static final int LL2P_TYPE_IS_ARP_REQUEST = 0x8006;
+    public static final int LL2P_TYPE_IS_ARP_REPLY = 0x8007;
+    public static final int LL2P_TYPE_IS_TEXT = 0x8008;
 }
