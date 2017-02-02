@@ -102,4 +102,14 @@ public class Constants implements Observer {
     public static final int LL2P_TYPE_IS_ARP_REQUEST = 0x8006;
     public static final int LL2P_TYPE_IS_ARP_REPLY = 0x8007;
     public static final int LL2P_TYPE_IS_TEXT = 0x8008;
+
+
+    //TABLE RECORDS
+    public static final int ARP_RECORD = 40;
+    public static final int ROUTING_RECORD = 41;
+    public static final int ADJACENCY_RECORD = 42;
+
+    //COMMUNICATION
+    public static final int UDP_PORT = 49999;
+    public static final int REMOTE_UDP_PORT = 9999;
 }

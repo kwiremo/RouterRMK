@@ -11,7 +11,7 @@ package com.renemoise.routerrmk;
 class Notes {
     /**
      * UDP Packet: Dest Port, Src Port, Length, data, Checksum.
-     *  //TODO: List<TableRecord> table = collections.synchronizedList(new ArrayList<TableRecord>());
+     *  //TODO: List<TableRecordInterface> table = collections.synchronizedList(new ArrayList<TableRecordInterface>());
      *
      */
 }

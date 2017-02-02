@@ -1,7 +1,7 @@
 package com.renemoise.routerrmk.support;
 
 import com.renemoise.routerrmk.UI.SnifferUI;
-import com.renemoise.routerrmk.network.datagrams.LL1Daemon;
+import com.renemoise.routerrmk.network.daemon.LL1Daemon;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
 
 import java.util.ArrayList;

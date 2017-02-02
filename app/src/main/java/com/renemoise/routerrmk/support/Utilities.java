@@ -1,5 +1,7 @@
 package com.renemoise.routerrmk.support;
 
+import java.util.Calendar;
+
 /**
  * Created by Rene Moise on 1/7/2017.
  *
@@ -48,4 +50,19 @@ public class Utilities {
 
         return paddingZeroes.append(hexString).toString();
     }
+
+    /**
+    * The base date in seconds since 1970:
+     */
+    public static long baseDateInSeconds = Calendar.getInstance().getTimeInMillis()/1000;
+
+    /**
+     * Get the time passed in seconds since the program began.
+     */
+    public static int getTimeInSeconds()
+    {
+        return (int) (Calendar.getInstance().getTimeInMillis()/1000 - baseDateInSeconds);
+    }
+
+
 }

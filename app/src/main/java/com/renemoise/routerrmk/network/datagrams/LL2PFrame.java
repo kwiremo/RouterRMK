@@ -1,5 +1,7 @@
 package com.renemoise.routerrmk.network.datagrams;
 
+import android.util.Log;
+
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagram_fields.CRC;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
@@ -37,41 +39,45 @@ public class LL2PFrame implements Datagram {
      */
     public LL2PFrame(byte[] LL2FrameSpecs){
         StringBuilder tempHolder = new StringBuilder();
-        String frameString = LL2FrameSpecs.toString();
 
+        String frameString = new String(LL2FrameSpecs);
+        Log.e("FRAME", frameString);
         //Extract Destination Field
         this.destinationAddress = (LL2PAddressField) Factory.getInstance().getDatagramHeaderField
                 (Constants.LL2P_DESTINATION_ADDRESS, frameString.substring
-                        (Constants.LL2P_DEST_ADDRESS_OFFSET,
-                                Constants.LL2P_DEST_ADD_FIELD_LENGTH));
+                        (Constants.LL2P_DEST_ADDRESS_OFFSET*2,
+                                Constants.LL2P_DEST_ADDRESS_OFFSET*2 + Constants.LL2P_DEST_ADD_FIELD_LENGTH*2));
 
-
+        Log.d("DEST", frameString.substring(0,6));
+        Log.d("SOURCE", frameString.substring(6,12));
         //Extract Source Field
         this.sourceAddress = (LL2PAddressField) Factory.getInstance().getDatagramHeaderField
                 (Constants.LL2P_SOURCE_ADDRESS, frameString.substring
-                        (Constants.LL2P_SOURCE_ADDRESS_OFFSET,
-                                Constants.LL2P_SOURCE_ADDRESS_FIELD_LENGTH));
+                        (Constants.LL2P_SOURCE_ADDRESS_OFFSET*2,
+                                Constants.LL2P_SOURCE_ADDRESS_OFFSET*2+Constants.LL2P_SOURCE_ADDRESS_FIELD_LENGTH*2));
 
         //Extract Type Field
         this.type = (LL2PTypeField) Factory.getInstance().getDatagramHeaderField
-                (Constants.LL2P_TYPE_FELD, frameString.substring(Constants.LL2P_TYPE_FIELD_OFFSET,
-                        Constants.LL2P_TYPE_FIELD_LENGTH));
+                (Constants.LL2P_TYPE_FELD, frameString.substring(Constants.LL2P_TYPE_FIELD_OFFSET*2,
+                        Constants.LL2P_TYPE_FIELD_OFFSET*2 + Constants.LL2P_TYPE_FIELD_LENGTH*2));
 
 
         //Extract Payload Field
-        int paylodLength = LL2FrameSpecs.length - Constants.LL2P_PAYLOAD_OFFSET + 1
-                - Constants.LL2P_CRC_FIELD_LENGTH;
+        int paylodLength = LL2FrameSpecs.length - Constants.LL2P_PAYLOAD_OFFSET*2
+                - Constants.LL2P_CRC_FIELD_LENGTH*2;
+        Log.e("LEN", frameString.length()+"");
+        Log.e("PAYloadLEn", paylodLength+"");
 
         this.payload = (DatagramPayloadField) Factory.getInstance().getDatagramHeaderField
-                (Constants.LL2P_PAYLOAD_FIELD, frameString.substring(Constants.LL2P_PAYLOAD_OFFSET,
-                        paylodLength));
+                (Constants.LL2P_PAYLOAD_FIELD, frameString.substring(Constants.LL2P_PAYLOAD_OFFSET*2,
+                        Constants.LL2P_PAYLOAD_OFFSET*2 + paylodLength));
 
         //Get CRC Value.
-        int CRC_Offset = Constants.LL2P_PAYLOAD_OFFSET + paylodLength;
+        int CRC_Offset = Constants.LL2P_PAYLOAD_OFFSET*2 + paylodLength;
 
         this.crc = (CRC) Factory.getInstance().getDatagramHeaderField
                 (Constants.LL2P_CRC_FIELD, frameString.substring(CRC_Offset,
-                        frameString.length()));
+                        CRC_Offset + Constants.LL2P_CRC_FIELD_LENGTH*2));
     }
 
     //TODO: Ask the professor

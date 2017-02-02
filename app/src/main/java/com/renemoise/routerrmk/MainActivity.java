@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Boot up the router.
         BootLoader bootRouter = new BootLoader(this);
-        testRouterComponents();
     }
 
     //called when the router is started. The inflater is responsible of enabling the or creating
@@ -52,20 +51,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void testRouterComponents()
-    {
-        LL2PAddressField dest = new LL2PAddressField("CAFCAF",false);
-        LL2PAddressField source = new LL2PAddressField("261995",false);
-        LL2PTypeField type = new LL2PTypeField("8001");
-        DatagramPayloadField payload = new DatagramPayloadField("Dummy Data");
-        CRC crc = new CRC("1234");
 
-        LL2PFrame frame = new LL2PFrame(dest, source, type, payload, crc);
-        Log.e("HEX_STRING",frame.toHexString());
-        Log.e("TO_STRING",frame.toString());
-        Log.e("PROTOCOL_INFO",frame.toProtocolExplanationString());
-        Log.e("SUMMARY", frame.toSummaryString());
-        //byte[] specs = "CAFCAF".getBytes();
-        //LL2PFrame frame = new LL2PFrame(specs);
-    }
 }
