@@ -43,10 +43,9 @@ public class FrameLogger extends Observable implements Observer  {
         if(observable.getClass() == BootLoader.class){
             //add Sniffer UI to the list of observers.
             addObserver(SnifferUI.getInstance());
-            LL1Daemon.getInstance().addObserver(this);
 
         }
-        else if(observable.getClass() == LL1Daemon.class){
+        else if(observable.getClass() == LL1Daemon.class && o.getClass() == LL2PFrame.class){
             frameList.add((LL2PFrame) o);
             setChanged();
             notifyObservers();

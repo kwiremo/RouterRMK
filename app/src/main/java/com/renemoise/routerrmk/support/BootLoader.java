@@ -1,4 +1,5 @@
 package com.renemoise.routerrmk.support;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.util.Log;
 
@@ -10,8 +11,13 @@ import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
+import com.renemoise.routerrmk.network.table.Table;
+import com.renemoise.routerrmk.network.tablerecord.AdjacencyRecord;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.util.Observable;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Rene Moise on 1/7/2017.
@@ -41,7 +47,17 @@ public class BootLoader extends Observable {
         UIManager.getInstance().disPlayMessage("Now let's roll! RouterRMK is app and running!");
 
         //TEST COMPONENTS
-        testRouterComponents();
+        //testRouterComponents();
+        //testTableProperties();
+        testLl1daemon();
+    }
+
+    private void testLl1daemon() {
+
+        LL1Daemon daemon = LL1Daemon.getInstance();
+
+        daemon.addAdjacency("112233", "10.30.27.160");
+        daemon.sendFrame(new LL2PFrame("1122332619958001Dummy Data1234".getBytes()));
     }
 
     //THe update method is called by an observable to which this obsever is registered when
@@ -49,6 +65,28 @@ public class BootLoader extends Observable {
     @Override
     public String toString() {
         return "BootLoader";
+    }
+
+    public void testTableProperties()
+    {
+        //create adjacency records.
+        AdjacencyRecord record1 = new AdjacencyRecord(12345,GetIPAddress.getInstance().getInetAddress("10.30.27.160"));
+        AdjacencyRecord record2 = new AdjacencyRecord(123456,GetIPAddress.getInstance().getInetAddress("10.30.27.160"));
+
+        //Create a table
+        Table adjacencyTable = new Table();
+        adjacencyTable.addItem(record1);
+        adjacencyTable.addItem(record2);
+        try {
+            Log.e(Constants.LOG_TAG, adjacencyTable.getItem(12345).toString());
+            adjacencyTable.removeItem(12345);
+            Log.e(Constants.LOG_TAG, adjacencyTable.getItem(12345).toString());
+
+        }
+        catch (LabException e)
+        {
+            Log.e(Constants.LOG_TAG, e.getMessage());
+        }
     }
 
     private void testRouterComponents()

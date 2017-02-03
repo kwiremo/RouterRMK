@@ -23,15 +23,7 @@ public class CRC implements DatagramHeaderField {
 
     @Override
     public String toHexString() {
-
-        StringBuilder hexValue = new StringBuilder();
-
-        for(int i = 0; i < crcValue.length(); i++)
-        {
-            int asciiValue = (int)crcValue.charAt(i);
-            hexValue.append(Integer.toHexString(asciiValue));
-        }
-        return hexValue.toString();
+        return crcValue;
     }
 
     @Override

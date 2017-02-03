@@ -29,7 +29,6 @@ public interface TableInterface {
 
     /**
      * 	The method throws a LabException if the record is not found in the table.
-     * 	//TODO: Why return a tablerecord when you already passed it.
      */
     TableRecord getItem(TableRecord tableRecord) throws LabException;
 
@@ -37,7 +36,7 @@ public interface TableInterface {
      * 	The method removes the record containing the matching Key passed as an Integer
      *  The method returns the record if one is removed, else the method returns a null object.
      */
-    TableRecord removeItem(int key);
+    TableRecord removeItem(int key) throws LabException;
 
     /**
      * 	The method returns a TableRecord with the matching key passed as an Integer.

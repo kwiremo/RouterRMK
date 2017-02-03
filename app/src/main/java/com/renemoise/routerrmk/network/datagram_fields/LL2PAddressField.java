@@ -87,4 +87,8 @@ public class LL2PAddressField implements DatagramHeaderField {
     {
         return isSourceAddress;
     }
+
+    public int getAddress() {
+        return address;
+    }
 }

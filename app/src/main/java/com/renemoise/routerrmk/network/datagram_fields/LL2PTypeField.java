@@ -4,6 +4,8 @@ import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramHeaderField;
 import com.renemoise.routerrmk.support.Utilities;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  * Created by Rene Moise on 1/22/2017.
  *
@@ -66,7 +68,36 @@ public class LL2PTypeField implements DatagramHeaderField {
     //this method uses the internal fields to create an explanation string.
     private void setExplanation()
     {
-        explanation = "Value: " + toHexString();
+        String contentsType;
+        switch (type){
+            case Constants.LL2P_TYPE_IS_TEXT:
+                contentsType = "TEXT";
+                break;
+            case Constants.LL2P_TYPE_IS_ARP_REPLY:
+                contentsType = "ARP REPLY";
+                break;
+            case Constants.LL2P_TYPE_IS_ARP_REQUEST:
+                contentsType = "ARP REQUEST";
+                break;
+            case Constants.LL2P_TYPE_IS_ECHO_REPLY:
+                contentsType = "ECHO REPLY";
+                break;
+            case Constants.LL2P_TYPE_IS_ECHO_REQUEST:
+                contentsType = "ECHO REQUEST";
+                break;
+            case Constants.LL2P_TYPE_IS_LL3P:
+                contentsType = "LL3 Frame";
+                break;
+            case Constants.LL2P_TYPE_IS_LRP:
+                contentsType = "LRP";
+                break;
+            case Constants.LL2P_TYPE_IS_RESERVED:
+                contentsType = "RESERVED";
+                break;
+            default:
+                return;
+        }
+        explanation = "Value: " + toHexString() + "Packet Type: " + contentsType;
     };
 
     @Override

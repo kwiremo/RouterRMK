@@ -13,20 +13,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Rene Moise on 2/1/2017.
  */
 
-//TODO: Create a title and understand this.
-
-public class GetIPAddress {
-    InetAddress returnAddress;
-
-    private static GetIPAddress ourInstance = new GetIPAddress();
-
-    public static GetIPAddress getInstance() {return ourInstance;}
-
-    public GetIPAddress() {}
-
-    public InetAddress getInetAddress(String hostname){
-
-        /*
+ /*
         The goal of this is to provide a generic method to get the IP address of a URL name.
         This will work with a numeric IP address.
 
@@ -45,6 +32,17 @@ public class GetIPAddress {
 
         So I removed the onPostExecute() from the private class and now get waits for the thread
         to finish.   */
+
+public class GetIPAddress {
+    InetAddress returnAddress;
+
+    private static GetIPAddress ourInstance = new GetIPAddress();
+
+    public static GetIPAddress getInstance() {return ourInstance;}
+
+    public GetIPAddress() {}
+
+    public InetAddress getInetAddress(String hostname){
 
         // create the object to manage the thread.  “ThreadedNameServer” is a private class below
         ThreadedNameServer thread = new ThreadedNameServer();

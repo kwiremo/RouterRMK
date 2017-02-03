@@ -111,5 +111,5 @@ public class Constants implements Observer {
 
     //COMMUNICATION
     public static final int UDP_PORT = 49999;
-    public static final int REMOTE_UDP_PORT = 9999;
+    public static final int REMOTE_UDP_PORT = 49999;
 }

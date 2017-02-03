@@ -1,8 +1,10 @@
 package com.renemoise.routerrmk.network.datagram_fields;
 
+import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramHeaderField;
 import com.renemoise.routerrmk.network.datagrams.Datagram;
 import com.renemoise.routerrmk.network.datagrams.TextDatagram;
+import com.renemoise.routerrmk.support.Factory;
 
 /**
  * Created by Rene Moise on 1/22/2017.
@@ -20,14 +22,13 @@ public class DatagramPayloadField implements DatagramHeaderField {
         this.packet = packet;
     }
 
-    //TODO: Ask
     public DatagramPayloadField(String text)
     {
         // This constructor would create a TextDatagram object using the passed in String.
         // It would make it possible for other classes to easily create payloads when a simple
         // string is to be contained here.
 
-        packet = new TextDatagram(text);
+        packet = Factory.getInstance().getPayloadDatagram(Constants.LL2P_TYPE_IS_TEXT, text);
     }
 
     public Datagram getPacket() {
@@ -44,7 +45,6 @@ public class DatagramPayloadField implements DatagramHeaderField {
         return String.format("LL2P Payload Field. Value: " + toAsciiString());
     }
 
-    //TODO: ASK The professor
     @Override
     public String toAsciiString() {
         String hexValue = toHexString();
