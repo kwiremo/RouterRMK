@@ -27,9 +27,12 @@ public class UIManager implements Observer {
                                         //called when the observable notifies it that it had set up
                                         //the parent activity.
     private Context context;            //context for the UI's sake.
-
+    private TableUI tableUI;
+    private SnifferUI snifferUI;
 
     private UIManager() {
+        tableUI = new TableUI();
+        snifferUI = new SnifferUI();
     }
 
     //To display on screen. Traditinally called a toast.
@@ -42,8 +45,13 @@ public class UIManager implements Observer {
         disPlayMessage(message, Toast.LENGTH_LONG); // default is long time
     }
 
+    //TODO: IT is not doing anything why?
     private void setUpWidgets(){
 
+    }
+
+    public TableUI getTableUI() {
+        return tableUI;
     }
 
     //This class observes the bootloader. It is notified when something changes in the bootloader.
@@ -55,5 +63,9 @@ public class UIManager implements Observer {
             context = parentActivity.getBaseContext();
             setUpWidgets();
         }
+    }
+
+    public SnifferUI getSnifferUI() {
+        return snifferUI;
     }
 }

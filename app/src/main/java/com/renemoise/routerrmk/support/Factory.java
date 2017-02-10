@@ -78,6 +78,9 @@ public class Factory extends Observable{
             case Constants.ROUTING_RECORD:
                 return new RoutingRecord();
 
+            case  Constants.FORWARDING_RECORD:
+                return new ForwardingRecord();
+
             default:
                 return null;
         }

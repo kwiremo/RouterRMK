@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/AdjacencyDialogueLinearLayout">
+
+    <TextView
+        android:text="@string/Enter_LL2P_Addr_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/enterLL2PAddLabelTextView" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/LL2P_Address_editText"
+        android:hint="261995" />
+
+    <TextView
+        android:text="@string/Enter_IP_Addr_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/enterIPAddressLabeltextView" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/IPAddrreditText"
+        android:hint="1.0.0.1" />
+
+    <Button
+        android:text="@string/Add_Adjacency_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_Adjacency_Dialogue_Button" />
+
+    <Button
+        android:text="@string/Cancel_Adjacency_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Cancel_Adjacency_dialogue_Button" />
+</LinearLayout>

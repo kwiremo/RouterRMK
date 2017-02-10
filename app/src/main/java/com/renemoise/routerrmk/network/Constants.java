@@ -16,6 +16,7 @@ import java.util.Observer;
  * This class will contain all constants.
  */
 public class Constants implements Observer {
+
     private static Constants ourInstance = new Constants();
     public static Constants getInstance() {
         return ourInstance;
@@ -108,6 +109,7 @@ public class Constants implements Observer {
     public static final int ARP_RECORD = 40;
     public static final int ROUTING_RECORD = 41;
     public static final int ADJACENCY_RECORD = 42;
+    public static final int FORWARDING_RECORD = 43;
 
     //COMMUNICATION
     public static final int UDP_PORT = 49999;

@@ -10,4 +10,10 @@
     <string name="routing_table">Routing Table</string>
     <string name="forwarding_table">Forwarding Table</string>
     <string name="blank_data"> </string>
+    <string name="AdjacencyDialogue">Add Adjacency Record</string>
+    <string name="Enter_LL2P_Addr_Label">Enter Hex LL2P Address Below</string>
+    <string name="Enter_IP_Addr_Label">Enter IP Address Below</string>
+    <string name="Add_Adjacency_Button">Add Adjacency</string>
+    <string name="Cancel_Adjacency_Button">Cancel</string>
+
 </resources>

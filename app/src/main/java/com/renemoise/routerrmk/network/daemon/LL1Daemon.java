@@ -58,6 +58,7 @@ public class LL1Daemon extends Observable implements Observer{
     //this is a reference to the singleton daemon class that handles layer 2 processing.
     private LL2Daemon ll2Daemon;
 
+    //LL1 Daemon constructor
     private LL1Daemon() {
     }
 
@@ -229,6 +230,8 @@ public class LL1Daemon extends Observable implements Observer{
         adjTable.setLl2pAddress(ll2pAdd);
         adjTable.setIpAddress(inetAddress);
 
+        Log.e("ADD_ADDED", ll2PAddress.toString());
+        Log.e("IP_ADD", ipAddress);
         adjacencyTable.addItem(adjTable);
         setChanged();
         notifyObservers(adjTable);

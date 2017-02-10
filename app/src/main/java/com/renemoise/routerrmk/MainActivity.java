@@ -7,7 +7,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.renemoise.routerrmk.UI.AddAdjacencyDialog;
 import com.renemoise.routerrmk.network.Constants;
+import com.renemoise.routerrmk.network.daemon.LL1Daemon;
 import com.renemoise.routerrmk.network.datagram_fields.CRC;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramHeaderField;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
@@ -21,7 +23,7 @@ import com.renemoise.routerrmk.UI.UIManager;
 /**
  * MainAcitvity is the starting point of the application.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddAdjacencyDialog.AdjacencyPairListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +49,19 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.showIPAddress){
             UIManager.getInstance().disPlayMessage("Your IP address is: " + Constants.IP_ADDRESS);
         }
+        else if(item.getItemId() == R.id.showAddAdjacencyRecordDialogue){
+
+            //Call a dialogue.
+            AddAdjacencyDialog adjacencyDialog = new AddAdjacencyDialog();
+            adjacencyDialog.show(getFragmentManager(), "Get Adjaceny Addresses: From if Statem.");
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
-
-
+    //this calls the LL1Daemon’s addAdjacency method, passing the two strings required.
+    @Override
+    public void onFinishedEditDialog(String ll2PAddress, String ipAddress) {
+        LL1Daemon.getInstance().addAdjacency(ll2PAddress,ipAddress);
+    }
 }

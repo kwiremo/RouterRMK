@@ -39,6 +39,12 @@ public class BootLoader extends Observable {
         ParentActivity.setParentActivity(parentActivity);
         addObserver(Constants.getInstance());
         addObserver(UIManager.getInstance());
+
+        //After the UIManager is added to the observer list for the BootLoader, the BootLoader get
+        // the TableUI from the UIManager and add it to the BootLoader’s observer list. This ensures
+        //That every instance of table UI that is instantiated is observing the bootloader as well.
+        addObserver(UIManager.getInstance().getTableUI());
+        addObserver(UIManager.getInstance().getSnifferUI());
         addObserver(FrameLogger.getInstance());
         addObserver(LL1Daemon.getInstance());
         setChanged();       //setChanged marks this observer as has been changed.
@@ -49,7 +55,7 @@ public class BootLoader extends Observable {
         //TEST COMPONENTS
         //testRouterComponents();
         //testTableProperties();
-        testLl1daemon();
+        //testLl1daemon();
     }
 
     private void testLl1daemon() {

@@ -55,4 +55,10 @@ public class TableRecord implements TableRecordInterface {
         return this.getKey().compareTo(tableRecord.getKey());
     }
 
+    //Implement tostring() method
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
