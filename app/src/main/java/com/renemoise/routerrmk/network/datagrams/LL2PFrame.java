@@ -80,7 +80,6 @@ public class LL2PFrame implements Datagram {
                         CRC_Offset + Constants.LL2P_CRC_FIELD_LENGTH*2));
     }
 
-    //TODO: Ask the professor
     private void makePayloadField()
     {
 

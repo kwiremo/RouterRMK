@@ -8,6 +8,7 @@ import com.renemoise.routerrmk.network.datagram_fields.DatagramHeaderField;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
+import com.renemoise.routerrmk.network.datagram_fields.TextPayload;
 import com.renemoise.routerrmk.network.datagrams.Datagram;
 import com.renemoise.routerrmk.network.datagrams.TextDatagram;
 import com.renemoise.routerrmk.network.tablerecord.ARPRecord;
@@ -43,6 +44,8 @@ public class Factory extends Observable{
                 return new LL2PTypeField(contents);
             case Constants.LL2P_PAYLOAD_FIELD:
                 return new DatagramPayloadField(contents);
+            case Constants.LL2P_TEXT_PAYLOAD_FIELD:
+                return new TextPayload(contents);
             case Constants.LL2P_CRC_FIELD:
                 return  new CRC(contents);
             default:

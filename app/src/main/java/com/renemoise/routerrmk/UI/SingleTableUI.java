@@ -34,9 +34,6 @@ public class SingleTableUI implements Observer{
     //This is actually a ListView, but we’ll use the base widget View in our
     // specification so that we can receive a wider range of View objects.
 
-    //TODO: Despite the definition, in the adjacency table ui, we had to make it a listView to be able
-    //to access the onItemClicked.
-
     protected ListView tableListViewWidget;
 
     //The SingleTableUI class has to have an adapter to translate the tableToDisplay to the ListView Object
@@ -51,7 +48,6 @@ public class SingleTableUI implements Observer{
     Table tableToDisplay;
 
     //This contains a List of table records that will be displayed on the screen.
-    //TODO: NO reference created for tableList.
     protected List<TableRecord> tableList;
 
 
@@ -61,29 +57,18 @@ public class SingleTableUI implements Observer{
         //Save the activity object.
         this.parentActivity = parentActivity;
         this.tableToDisplay = tableToDisplay;
-
-        //TODO: IS THIS RIGHT?
         tableList = tableToDisplay.getTableArrayList();
-        //TODO: CAN NOT FIND SIMPLE TABLE ROW.
-            adapter = new ArrayAdapter(parentActivity.getBaseContext(),
-
+        adapter = new ArrayAdapter(parentActivity.getBaseContext(),
                 android.R.layout.simple_list_item_1, tableToDisplay.getTableArrayList());
-
-
 
         //connect the local java object to the ListView xml object passed into the constructor by
         // the TableUI class
         tableListViewWidget = (ListView) parentActivity.findViewById(viewID);
 
         //Tie the widget to the adaptor
-        //TODO: setdapter not working.
         tableListViewWidget.setAdapter(adapter); // tell the widget its adapter.
 
         //Add this instance to the tableToDisplay
-        //TODO: Table interface does not implement observable. Do you mean the base class that extends TbaleInterface?
-        //TODO: IS the cast the right way to do it?
-
-        //TODO; This is crashing the router. Is it because it is not done yet?
         this.tableToDisplay.addObserver(this);
     }
 

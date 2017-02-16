@@ -104,4 +104,8 @@ public class LL2PTypeField implements DatagramHeaderField {
     public String toString() {
         return toHexString();
     }
+
+    public int getType() {
+        return type;
+    }
 }

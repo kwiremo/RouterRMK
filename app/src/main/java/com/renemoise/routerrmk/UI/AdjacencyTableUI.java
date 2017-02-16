@@ -1,12 +1,14 @@
 package com.renemoise.routerrmk.UI;
 
 import android.app.Activity;
+import android.provider.Contacts;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.daemon.LL1Daemon;
+import com.renemoise.routerrmk.network.daemon.LL2Daemon;
 import com.renemoise.routerrmk.network.datagram_fields.CRC;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
@@ -27,7 +29,8 @@ import java.util.Observer;
 public class AdjacencyTableUI extends SingleTableUI implements Observer {
     //o	this holds the reference to the ll1Daemon
 
-    private LL1Daemon ll1Daemon;
+    private LL1Daemon ll1Daemon;     //TODO: Do we need LL1Daemon now that we are using LL2Daemon to send frame?
+    private LL2Daemon ll2Daemon;    //TODO: Should it have accees to the LL2Daemon as well?
 
     public AdjacencyTableUI(Activity parentActivity, int viewID, Table tableToDisplay, LL1Daemon ll1Daemon) {
         super(parentActivity, viewID, tableToDisplay);
@@ -36,37 +39,27 @@ public class AdjacencyTableUI extends SingleTableUI implements Observer {
         // know it to be the LL1Daemon.
         this.ll1Daemon = ll1Daemon;
 
+        //Initialize LL2Daoemon
+        ll2Daemon = LL2Daemon.getInstance();
+
         //tell the ListView object where it’s onItemClickListener method is written.
         tableListViewWidget.setOnItemClickListener(sendEchoRequest);
-        //tableListViewWidget
 
-        //TODO: ADD the remove.
+        //tell the ListView object where it’s onItemClickListener method is written.
         tableListViewWidget.setOnItemLongClickListener(removeAdjacency);
     }
 
     //this is a method to handle the click on an item in the screen display.
-    //TODO: Is this a method?
     private AdapterView.OnItemClickListener sendEchoRequest = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-            //Retrieve the record that was clicked. //TODO: tablelist?
+            UIManager.getInstance().disPlayMessage(i+"");
+            //Retrieve the record that was clicked.
             AdjacencyRecord record = (AdjacencyRecord) tableList.get(i);
 
-            // Create a new LL2PFrame.
-            LL2PFrame frame = new LL2PFrame(new LL2PAddressField(record.getLl2pAddress(),false),
-                    new LL2PAddressField(Constants.LL2P_ROUTER_ADDRESS_VALUE, true),
-                    new LL2PTypeField(Constants.LL2P_TYPE_IS_ECHO_REQUEST),
-                    new DatagramPayloadField("ECHO CONTENTES"),new CRC("1234"));
-
-            //Get instance
-            ll1Daemon = LL1Daemon.getInstance();
-
-            //Send frame.
-            ll1Daemon.sendFrame(frame);
-
-            //Say you just attempted to send a frame.
-            UIManager.getInstance().disPlayMessage("Just sent a clicked frame!");
+            //Request the LL2Daemon to send this Echo request.
+            ll2Daemon.sendEchoRequest(record.getLl2pAddress());
         }
     };
 
@@ -80,7 +73,6 @@ public class AdjacencyTableUI extends SingleTableUI implements Observer {
             //Get ll2Paddress used as a key in the table.
             int key = record.getLl2pAddress();
 
-            //TODO: CONFIRM HOW TO DO IT.
             //Remove a frame from the table.
             try {
                 tableToDisplay.removeItem(key);
@@ -90,7 +82,6 @@ public class AdjacencyTableUI extends SingleTableUI implements Observer {
                 Log.e(this.toString(), e.getMessage());
             }
 
-            //TODO: Just call updateView.
             //Update the display
             updateView();
 

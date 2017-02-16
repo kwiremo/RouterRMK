@@ -59,7 +59,6 @@ public class SnifferUI implements Observer {
         //Connect the local ListView object to the widget on the screen. This will look something like
         frameListView = (ListView) parentActivity.findViewById(R.id.idSnifferListView);
 
-        //TODO: Create a constructor in the sniffercustom?
         //Instantiate the frameListAdapter.  Pass it the context and a frameList reference using the
         //FrameLogger’s getFrameList() method.
         frameListAdapter = new SnifferFrameListAdapter(context, frameLogger.getFrameList());
@@ -82,7 +81,6 @@ public class SnifferUI implements Observer {
     // assigns that frame’s protocol explanation and hex bytes strings to the lower windows for
     // display on-screen.
 
-    //TODO: IS it on clickListener or OnItemCliskListener.
     private AdapterView.OnItemClickListener showUpdatedFrameList = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -162,8 +160,6 @@ public class SnifferUI implements Observer {
             if (convertView == null) {
                 // inflate the view defined in the layout xml file using an inflater we create here.
                 LayoutInflater inflator = LayoutInflater.from(context);
-
-                //TODO: was sniffer_list_item
                 convertView = inflator.inflate(R.layout.sniffer_layout, parent, false);
                 viewHolder = new ViewHolder();
                 viewHolder.packetNumber = (TextView) convertView.findViewById(R.id.snifferFrameNumberTextView);

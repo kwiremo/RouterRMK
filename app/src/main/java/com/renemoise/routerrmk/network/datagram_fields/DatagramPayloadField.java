@@ -22,12 +22,15 @@ public class DatagramPayloadField implements DatagramHeaderField {
         this.packet = packet;
     }
 
+    // This constructor would create a TextDatagram object using the passed in String.
+    // It would make it possible for other classes to easily create payloads when a simple
+    // string is to be contained here. This was public before we created a dedicated
+    // datagramfield for the text payload field. Now it is private so that we restrict access
+    //to other classes. Only this class can see it and can be used for debugging reasons.
+
+    //TODO: Make it private after asking Prof.
     public DatagramPayloadField(String text)
     {
-        // This constructor would create a TextDatagram object using the passed in String.
-        // It would make it possible for other classes to easily create payloads when a simple
-        // string is to be contained here.
-
         packet = Factory.getInstance().getPayloadDatagram(Constants.LL2P_TYPE_IS_TEXT, text);
     }
 

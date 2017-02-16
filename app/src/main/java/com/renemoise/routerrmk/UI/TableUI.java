@@ -27,14 +27,6 @@ public class TableUI implements Runnable,Observer {
 
     //Public constructor
     public TableUI() {
-
-        //TODo: WIll need to be implemented later.
-        /*arpTableUI = new SingleTableUI(ParentActivity.getParentActivity(),
-                R.id.arpTableListView,
-                ARPDaemon.getInstance().getARPTable());
-                */
-
-
     }
 
     //runs once every second to keep the displays current

@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.ExpandableListActivity;
 import android.util.Log;
 
+import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.tablerecord.TableRecord;
 import com.renemoise.routerrmk.support.LabException;
@@ -35,7 +36,12 @@ public class Table extends Observable implements TableInterface{
     @Override
     public TableRecord addItem(TableRecord tableRecord) {
         try{
+            //Try to see if there is an item.
             getItem(tableRecord);
+
+            //If it is, remove it and update it.
+            removeItem(tableRecord.getKey());
+            table.add(tableRecord);
         }
         catch (LabException e)
         {
@@ -52,10 +58,11 @@ public class Table extends Observable implements TableInterface{
     @Override
     public TableRecord getItem( TableRecord tableRecord) throws LabException {
         if(table.contains(tableRecord))
+            UIManager.getInstance().disPlayMessage("Record already exist.");
 
         for(TableRecord record : table)
         {
-            if(record.compareTo(tableRecord) == 0)
+            if(record.equals(tableRecord))
                 return record;
         }
         throw  new LabException("RECORD NOT PRESENT");

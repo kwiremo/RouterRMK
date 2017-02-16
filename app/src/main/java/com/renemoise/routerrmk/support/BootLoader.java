@@ -6,10 +6,12 @@ import android.util.Log;
 import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.daemon.LL1Daemon;
+import com.renemoise.routerrmk.network.daemon.LL2Daemon;
 import com.renemoise.routerrmk.network.datagram_fields.CRC;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
+import com.renemoise.routerrmk.network.datagram_fields.TextPayload;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
 import com.renemoise.routerrmk.network.table.Table;
 import com.renemoise.routerrmk.network.tablerecord.AdjacencyRecord;
@@ -49,11 +51,11 @@ public class BootLoader extends Observable {
         addObserver(UIManager.getInstance().getSnifferUI());
         addObserver(FrameLogger.getInstance());
         addObserver(LL1Daemon.getInstance());
+        addObserver(LL2Daemon.getInstance());
         setChanged();       //setChanged marks this observer as has been changed.
         notifyObservers();  // Notify Observers things have changed. Automatically calls the
                             //clearchanged that set the observer as not changed.
         UIManager.getInstance().disPlayMessage("Now let's roll! RouterRMK is app and running!");
-
         //TEST COMPONENTS
         testRouterComponents();
         testTableProperties();
@@ -102,7 +104,7 @@ public class BootLoader extends Observable {
         LL2PAddressField dest = new LL2PAddressField("CAFCAF",false);
         LL2PAddressField source = new LL2PAddressField("261995",false);
         LL2PTypeField type = new LL2PTypeField("8001");
-        DatagramPayloadField payload = new DatagramPayloadField("Dummy Data");
+        TextPayload payload = new TextPayload("Dummy Data");
         CRC crc = new CRC("1234");
 
         //LL2PFrame frame = new LL2PFrame(dest, source, type, payload, crc);

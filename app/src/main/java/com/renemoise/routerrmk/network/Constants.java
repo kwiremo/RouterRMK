@@ -81,7 +81,8 @@ public class Constants implements Observer {
     public static final int LL2P_SOURCE_ADDRESS = 2; //true if the contained address is a source address.
     public static final int LL2P_TYPE_FELD = 3;
     public static final int LL2P_PAYLOAD_FIELD = 4;
-    public static final int LL2P_CRC_FIELD = 5;
+    public static final int LL2P_TEXT_PAYLOAD_FIELD = 5;
+    public static final int LL2P_CRC_FIELD = 6;
     public static final String LL2P_ROUTER_ADDRESS_VALUE = "261995";
 
     //LL2P FIELD LENGTH IN BYTES

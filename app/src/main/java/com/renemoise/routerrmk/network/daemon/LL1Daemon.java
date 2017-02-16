@@ -130,7 +130,7 @@ public class LL1Daemon extends Observable implements Observer{
             setChanged();
             notifyObservers(receivedFrame);
             // pass this LL2P Frame to the LL2PDaemon when you create one...
-            LL2Daemon.processLL2PFrame(receivedFrame);
+            LL2Daemon.getInstance().processLL2PFrame(receivedFrame);
 
             // spin off a new thread to listen for packets.
 
@@ -214,8 +214,6 @@ public class LL1Daemon extends Observable implements Observer{
 
     // This method is passed two strings. It creates an AdjacencyRecord and has the table
     // add this record to itself.
-
-    //TODO: When is the record added?
     public void	addAdjacency(String ll2PAddress, String ipAddress){
 
         int ll2pAdd = Integer.valueOf(ll2PAddress,16);      //Get integfer value of the address
