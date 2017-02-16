@@ -8,6 +8,8 @@ import com.renemoise.routerrmk.network.tablerecord.TableRecord;
 import com.renemoise.routerrmk.support.LabException;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Table Interface serves as an interface for all other tables.

@@ -9,6 +9,7 @@ import com.renemoise.routerrmk.network.datagrams.Datagram;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
 import com.renemoise.routerrmk.network.table.Table;
 import com.renemoise.routerrmk.network.tablerecord.AdjacencyRecord;
+import com.renemoise.routerrmk.support.BootLoader;
 import com.renemoise.routerrmk.support.Factory;
 import com.renemoise.routerrmk.support.FrameLogger;
 import com.renemoise.routerrmk.support.GetIPAddress;
@@ -60,32 +61,33 @@ public class LL1Daemon extends Observable implements Observer{
 
     //LL1 Daemon constructor
     private LL1Daemon() {
+        //Initialize the adjacency table
+        adjacencyTable = new Table();
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        openSockets();
-        nameServer = new GetIPAddress();
+        if(observable.getClass() == BootLoader.class) {
+            openSockets();
+            nameServer = new GetIPAddress();
 
-        //Initialize the adjacency table
-        adjacencyTable = new Table();
+            //Retrieve and save the reference to the Factory singleton class.
+            factory = Factory.getInstance();
 
-        //Retrieve and save the reference to the Factory singleton class.
-        factory = Factory.getInstance();
+            //Add observer to observers
+            addObserver(FrameLogger.getInstance());
 
-        //Add observer to observers
-        addObserver(FrameLogger.getInstance());
+            //	Save the reference for the UIManager singleton class so we can call its
+            // displayMessage(…) method.
+            uiManager = UIManager.getInstance();
 
-        //	Save the reference for the UIManager singleton class so we can call its
-        // displayMessage(…) method.
-        uiManager = UIManager.getInstance();
+            //Save the reference to the singleton LL2P daemon object so we can pass received frames
+            // to it for processing at layer 2 of our router.
+            ll2Daemon = LL2Daemon.getInstance();
 
-        //Save the reference to the singleton LL2P daemon object so we can pass received frames
-        // to it for processing at layer 2 of our router.
-        ll2Daemon = LL2Daemon.getInstance();
-
-        // spin off a new thread to listen for packets.
-        new ReceiveUnicastFrame().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, receiveSocket);
+            // spin off a new thread to listen for packets.
+            new ReceiveUnicastFrame().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, receiveSocket);
+        }
 
     }
 

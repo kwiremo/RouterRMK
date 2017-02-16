@@ -40,6 +40,8 @@ public class BootLoader extends Observable {
         addObserver(Constants.getInstance());
         addObserver(UIManager.getInstance());
 
+        //testTableProperties();
+
         //After the UIManager is added to the observer list for the BootLoader, the BootLoader get
         // the TableUI from the UIManager and add it to the BootLoader’s observer list. This ensures
         //That every instance of table UI that is instantiated is observing the bootloader as well.
@@ -53,9 +55,9 @@ public class BootLoader extends Observable {
         UIManager.getInstance().disPlayMessage("Now let's roll! RouterRMK is app and running!");
 
         //TEST COMPONENTS
-        //testRouterComponents();
-        //testTableProperties();
-        //testLl1daemon();
+        testRouterComponents();
+        testTableProperties();
+        testLl1daemon();
     }
 
     private void testLl1daemon() {

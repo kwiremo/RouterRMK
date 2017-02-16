@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.renemoise.routerrmk.support.BootLoader;
 import com.renemoise.routerrmk.support.FrameLogger;
 import com.renemoise.routerrmk.support.ParentActivity;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -60,7 +62,7 @@ public class SnifferUI implements Observer {
         //TODO: Create a constructor in the sniffercustom?
         //Instantiate the frameListAdapter.  Pass it the context and a frameList reference using the
         //FrameLogger’s getFrameList() method.
-        frameListAdapter = new SnifferFrameListAdapter();
+        frameListAdapter = new SnifferFrameListAdapter(context, frameLogger.getFrameList());
 
         //Connect the ListView object to the adapter with the ListView’s “setAdapter(Adapter)” method.
         // You did this in the SingleTableUI.
@@ -85,19 +87,20 @@ public class SnifferUI implements Observer {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-            //Retrieve the record that was clicked.
-            AdjacencyRecord record = (AdjacencyRecord) tableList.get(i);
+            //Retrieve the frame that was clicked.
+            //TODO: We use framelogger, right?
+            LL2PFrame frameSelected = frameLogger.getFrameList().get(i);
 
-            // Create a new LL2PFrame.
-            LL2PFrame frame = new LL2PFrame(new LL2PAddressField(record.getLl2pAddress(),false),
-                    new LL2PAddressField(Constants.LL2P_ROUTER_ADDRESS_VALUE, true),
-                    new LL2PTypeField(Constants.LL2P_TYPE_IS_ECHO_REQUEST),
-                    new DatagramPayloadField("ECHO CONTENTES"),new CRC("1234"));
+            //Set the TextView in the middle window’s text to that string.
+            protocolBreakoutTextView.setText(frameSelected.toProtocolExplanationString());
+
+            //Set the TextView in the middle window’s text to that string.
+            String hexStringExplanation = frameSelected.toHexString();
+
+            frameBytesTextView.setText(hexStringExplanation);
+
         }
-
-
     };
-
 
     /*
     *     This class is a holder. It holds widgets (views) that make
@@ -108,11 +111,32 @@ public class SnifferUI implements Observer {
         TextView packetSummaryString;
     }
 
-    //TODO: What does it implement?
-    private class SnifferFrameListAdapter extends ListAdapter {
-        @Override
-        public long getItemId(int i) {
-            return 0;
+    /**
+     * SnifferFrameListAdapter is a private adapter to display numbered rows from a List
+     * object which contains all frames transmitted or received.
+     *
+     * It is instantiated above and note that the constructor passes the context as well as
+     * the frameList.
+     */
+    /**
+     * SnifferFrameListAdapter is a private adapter to display numbered rows from a List
+     * object which contains all frames transmitted or received.
+     *
+     * It is instantiated above and note that the constructor passes the context as well as
+     * the frameList.
+     */
+    private class SnifferFrameListAdapter extends ArrayAdapter<LL2PFrame> {
+        // this is the ArrayList that will be displayed in the rows on the ListView.
+        private ArrayList<LL2PFrame> frameList;
+
+        /*
+        *  The constructor is passed the context and the arrayList.
+        *  the arrayList is assigned to the local variable so its contents can be
+        *  adapted to the listView.
+        */
+        public SnifferFrameListAdapter(Context context, ArrayList<LL2PFrame> frames) {
+            super(context, 0, frames);
+            frameList = frames;
         }
 
         /**
@@ -138,6 +162,8 @@ public class SnifferUI implements Observer {
             if (convertView == null) {
                 // inflate the view defined in the layout xml file using an inflater we create here.
                 LayoutInflater inflator = LayoutInflater.from(context);
+
+                //TODO: was sniffer_list_item
                 convertView = inflator.inflate(R.layout.sniffer_layout, parent, false);
                 viewHolder = new ViewHolder();
                 viewHolder.packetNumber = (TextView) convertView.findViewById(R.id.snifferFrameNumberTextView);
@@ -150,9 +176,10 @@ public class SnifferUI implements Observer {
             viewHolder.packetSummaryString.setText(frameList.get(position).toSummaryString());
             return convertView;
         }
+
     }
 
-    /*This method handles observer updates from both the BootLoader and the FrameLogger.
+        /*This method handles observer updates from both the BootLoader and the FrameLogger.
     When the bootloader notifies this method of change the SnifferUI sets up all widgets via
     the connectWidgets() method.
     When the FrameLogger class notifies the SnifferUI of changes, the SnifferUI calls the
@@ -172,8 +199,8 @@ public class SnifferUI implements Observer {
             //Reference to framelogger
             frameLogger = FrameLogger.getInstance();
 
-        /*The sniffer UI Observes the Framelogger. It is already added in the framelogger
-        update class.*/
+            //Add the snifferUI instance to the list of the framelogger observers.
+            frameLogger.addObserver(this);
 
             //Connect all widgets.
             connectWidgets();
@@ -183,6 +210,4 @@ public class SnifferUI implements Observer {
             frameListAdapter.notifyDataSetChanged();
         }
     }
-
-
 }

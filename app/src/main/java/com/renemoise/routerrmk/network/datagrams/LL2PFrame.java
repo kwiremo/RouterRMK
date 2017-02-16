@@ -101,6 +101,13 @@ public class LL2PFrame implements Datagram {
                 getPayload().toHexString() + getCrc().toHexString());
     }
 
+    public String toHexStringFormatted() {
+
+        return String.format("{0}\t{1}", getDestinationAddress().toHexString()+
+                getSourceAddress().toHexString()+ getType().toHexString()+
+                getPayload().toHexString() + getCrc().toHexString());
+    }
+
     @Override
     public String toProtocolExplanationString() {
         return String.format(getDestinationAddress().explainSelf()+"\n"+

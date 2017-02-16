@@ -2,6 +2,7 @@ package com.renemoise.routerrmk.network.datagram_fields;
 
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramHeaderField;
+import com.renemoise.routerrmk.support.Utilities;
 
 /**
  * Created by Rene Moise on 1/22/2017.
@@ -33,15 +34,7 @@ public class CRC implements DatagramHeaderField {
 
     @Override
     public String toAsciiString() {
-
-        StringBuilder crcAscii = new StringBuilder();
-        char [] crcValueChar = crcValue.toCharArray();
-
-        for(int i = 0; i < crcValue.length(); i++)
-        {
-            crcAscii.append((int)crcValueChar[i]);
-        }
-        return crcAscii.toString();
+        return Utilities.toAsciiString(crcValue);
     }
 
     @Override

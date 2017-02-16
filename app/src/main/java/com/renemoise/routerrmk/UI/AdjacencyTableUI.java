@@ -12,6 +12,7 @@ import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
+import com.renemoise.routerrmk.network.table.Table;
 import com.renemoise.routerrmk.network.table.TableInterface;
 import com.renemoise.routerrmk.network.tablerecord.AdjacencyRecord;
 import com.renemoise.routerrmk.support.LabException;
@@ -28,7 +29,7 @@ public class AdjacencyTableUI extends SingleTableUI implements Observer {
 
     private LL1Daemon ll1Daemon;
 
-    public AdjacencyTableUI(Activity parentActivity, int viewID, TableInterface tableToDisplay, LL1Daemon ll1Daemon) {
+    public AdjacencyTableUI(Activity parentActivity, int viewID, Table tableToDisplay, LL1Daemon ll1Daemon) {
         super(parentActivity, viewID, tableToDisplay);
 
         // “TableManager”  is the name of the class that manages the table. In this case we
@@ -37,6 +38,10 @@ public class AdjacencyTableUI extends SingleTableUI implements Observer {
 
         //tell the ListView object where it’s onItemClickListener method is written.
         tableListViewWidget.setOnItemClickListener(sendEchoRequest);
+        //tableListViewWidget
+
+        //TODO: ADD the remove.
+        tableListViewWidget.setOnItemLongClickListener(removeAdjacency);
     }
 
     //this is a method to handle the click on an item in the screen display.
@@ -45,7 +50,7 @@ public class AdjacencyTableUI extends SingleTableUI implements Observer {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-            //Retrieve the record that was clicked.
+            //Retrieve the record that was clicked. //TODO: tablelist?
             AdjacencyRecord record = (AdjacencyRecord) tableList.get(i);
 
             // Create a new LL2PFrame.

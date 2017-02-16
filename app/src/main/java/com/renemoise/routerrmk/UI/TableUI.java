@@ -20,7 +20,7 @@ import java.util.Observer;
 public class TableUI implements Runnable,Observer {
 
     //   Note that this will actually implement the AdjacencyTableUI.
-    private SingleTableUI adjacencyUI;
+    private AdjacencyTableUI adjacencyUI;
     private SingleTableUI arpTableUI;
     private SingleTableUI routingTableUI;
     private SingleTableUI forwardingUI;
@@ -34,10 +34,7 @@ public class TableUI implements Runnable,Observer {
                 ARPDaemon.getInstance().getARPTable());
                 */
 
-        //Create an object of the adjacency UI.
-        adjacencyUI = new SingleTableUI(ParentActivity.getParentActivity(),
-                R.id.idAdjacencyTableListView,
-                LL1Daemon.getInstance().getAdjacencyTable());
+
     }
 
     //runs once every second to keep the displays current
@@ -49,6 +46,10 @@ public class TableUI implements Runnable,Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-
+        //Create an object of the adjacency UI.
+        adjacencyUI = new AdjacencyTableUI(ParentActivity.getParentActivity(),
+                R.id.idAdjacencyTableListView,
+                LL1Daemon.getInstance().getAdjacencyTable(),
+                LL1Daemon.getInstance());
     }
 }

@@ -64,5 +64,42 @@ public class Utilities {
         return (int) (Calendar.getInstance().getTimeInMillis()/1000 - baseDateInSeconds);
     }
 
+    /**
+     * @param inputToChange
+     * @return
+     *
+     * This function receives any string value and return a string of its ascii values.
+     */
+    public static String toAsciiString(String inputToChange) {
+
+        StringBuilder crcAscii = new StringBuilder();
+        char [] crcValueChar = inputToChange.toCharArray();
+
+        for(int i = 0; i < inputToChange.length(); i++)
+        {
+            crcAscii.append((int)crcValueChar[i]);
+        }
+        return crcAscii.toString();
+    }
+
+    /**
+     * @param inputToChange
+     * @return
+     *
+     * This function receives an string input value and return the hexvalue of the ascii value of
+     * each character.
+     */
+
+    public static String toHexString(String inputToChange) {
+        StringBuilder hexValue = new StringBuilder();
+
+        for(int i = 0; i < inputToChange.length(); i++)
+        {
+            int asciiValue = (int)inputToChange.charAt(i);
+            hexValue.append(Integer.toHexString(asciiValue));
+        }
+        return hexValue.toString();
+    }
+
 
 }

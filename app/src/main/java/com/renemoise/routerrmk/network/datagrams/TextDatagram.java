@@ -1,11 +1,16 @@
 package com.renemoise.routerrmk.network.datagrams;
 
+import com.renemoise.routerrmk.network.datagram_fields.TextPayload;
+import com.renemoise.routerrmk.support.Factory;
+import com.renemoise.routerrmk.support.Utilities;
+
 /**
  * Created by Rene Moise on 1/31/2017.
  */
 
 public class TextDatagram implements Datagram {
 
+    //	This is a DatagramHeaderField object that contains only text.
     private String payload;
 
     public TextDatagram(String payload) {
@@ -14,23 +19,21 @@ public class TextDatagram implements Datagram {
 
     @Override
     public String toHexString() {
-        StringBuilder hexValue = new StringBuilder();
-
-        for(int i = 0; i < payload.length(); i++)
-        {
-            int asciiValue = (int)payload.charAt(i);
-            hexValue.append(Integer.toHexString(asciiValue));
-        }
-        return hexValue.toString();
+        return Utilities.toHexString(payload);
     }
 
     @Override
     public String toProtocolExplanationString() {
-        return String.format("TEXT datagram. Value: {0}", payload);
+        return String.format("Text datagram. Value: {0}", payload);
     }
 
     @Override
     public String toSummaryString() {
         return String.format("Text Payload");
+    }
+
+    @Override
+    public String toString() {
+        return toHexString();
     }
 }
