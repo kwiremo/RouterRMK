@@ -71,7 +71,7 @@
             android:id="@+id/idSnifferListView" />
 
         <TextView
-            android:text="TextView"
+            android:text="Click a frame for a detailed explanation"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tablesDimension"
             android:background="@color/bodyBackgroundColor"
@@ -84,8 +84,8 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
+            android:text="Click a frame for a detailed explanation"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/tablesDimension"
             android:background="@color/bodyBackgroundColor"
             android:id="@+id/idHexContentsTextView"
