@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
+import com.renemoise.routerrmk.network.datagrams.ARPDatagram;
 import com.renemoise.routerrmk.network.datagrams.Datagram;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
 import com.renemoise.routerrmk.network.table.Table;
@@ -197,13 +198,7 @@ public class LL1Daemon extends Observable implements Observer{
 
     //This is method is used when a record is to be removed.
     public void	removeAdjacency(AdjacencyRecord recordToRemove){
-        try {
             adjacencyTable.removeItem(recordToRemove.getKey());
-        }
-        catch (LabException e)
-        {
-            Log.e(Constants.LOG_TAG, e.getMessage());
-        }
     }
 
     //o	This method returns the Adjacency table. It is used by a UI object to display the list.
@@ -222,17 +217,19 @@ public class LL1Daemon extends Observable implements Observer{
         //The factory returns a table. We are leaving this new instance creation to the factory
         //to encapsulate what might change. The factory will return any table depending on what id
         //that was passed.
-        AdjacencyRecord adjTable = (AdjacencyRecord)Factory.getInstance().getTableRecord(Constants.ADJACENCY_RECORD);
+        AdjacencyRecord adjTable = (AdjacencyRecord)
+                Factory.getInstance().getTableRecord(Constants.ADJACENCY_RECORD);
 
         //We are setting the LL2Paddress and the inetaddress here because the factory returns a
         //default instance that does not set them. This one way to solve a problem that the factory
         //method expects different parameter for each table record.
         adjTable.setLl2pAddress(ll2pAdd);
         adjTable.setIpAddress(inetAddress);
-
-        Log.e("ADD_ADDED", ll2PAddress.toString());
-        Log.e("IP_ADD", ipAddress);
         adjacencyTable.addItem(adjTable);
+
+        //Send arp request right after we add an adjacency.
+        ll2Daemon.sendLL2PFrame(new ARPDatagram(LL3Daemon.getInstance().getMyLL3PAddress()),
+                ll2pAdd,Constants.LL2P_TYPE_IS_ARP_REQUEST);
         setChanged();
         notifyObservers(adjTable);
     }

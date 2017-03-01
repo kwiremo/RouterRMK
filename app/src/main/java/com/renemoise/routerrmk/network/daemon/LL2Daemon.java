@@ -7,8 +7,12 @@ import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
 import com.renemoise.routerrmk.network.datagram_fields.TextPayload;
+import com.renemoise.routerrmk.network.datagrams.ARPDatagram;
+import com.renemoise.routerrmk.network.datagrams.Datagram;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
 import com.renemoise.routerrmk.support.BootLoader;
+import com.renemoise.routerrmk.support.Factory;
+import com.renemoise.routerrmk.support.LabException;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -16,11 +20,16 @@ import java.util.Observer;
 /**
  * Created by Rene Moise on 2/1/2017.
  */
+
+/**
+ * The LL2Daemon class is responsible of making LL2Frames and requesting the LL1Daemon to send it.
+ */
 public class LL2Daemon implements Observer {
     private static LL2Daemon ourInstance = new LL2Daemon();
     public static LL2Daemon getInstance() {
         return ourInstance;
     }
+    public ARPDaemon arpDaemon;
 
     // this holds a reference for the UIManager. Primarily used for displaying messages on screen.
     private static UIManager uiManager;
@@ -36,9 +45,10 @@ public class LL2Daemon implements Observer {
     //o	This method is passed an LL2PFrame object. It processes the frame.
     public void processLL2PFrame(LL2PFrame receivedFrame) {
 
-        if(receivedFrame.getDestinationAddress().toString() == Constants.LL2P_ROUTER_ADDRESS_VALUE){
+        String dest = receivedFrame.getDestinationAddress().toHexString();
+        if(!receivedFrame.getDestinationAddress().toHexString().equals(Constants.LL2P_ROUTER_ADDRESS_VALUE)){
             uiManager.disPlayMessage("Discarded packet from " +
-                    receivedFrame.getSourceAddress().toString());
+                    receivedFrame.getSourceAddress().toHexString());
         }
         else
         {
@@ -60,20 +70,25 @@ public class LL2Daemon implements Observer {
                     uiManager.disPlayMessage("Unsupported frame Received. Stay tuned for updates");
                     break;
                 case Constants.LL2P_TYPE_IS_ARP_REQUEST:
-                    uiManager.disPlayMessage("Unsupported frame Received. Stay tuned for updates");
+                    arpDaemon.processARPRequest(receivedFrame.getSourceAddress().getAddress(),
+                            (ARPDatagram) receivedFrame.getPayload().getPacket());
+                    uiManager.disPlayMessage("received an ARP Request");
                     break;
+
                 case Constants.LL2P_TYPE_IS_ARP_REPLY:
-                    uiManager.disPlayMessage("Unsupported frame Received. Stay tuned for updates");
+                    arpDaemon.processARPReply(receivedFrame.getSourceAddress().getAddress(),
+                            (ARPDatagram) receivedFrame.getPayload().getPacket());
+                    uiManager.disPlayMessage("Received an ARP Reply");
                     break;
+
                 case Constants.LL2P_TYPE_IS_TEXT:
                     uiManager.disPlayMessage("Received Text packet + "+
                             receivedFrame.getSourceAddress().toString());
                     break;
                 default:
-                    uiManager.disPlayMessage("Unsupported frame Received. Stay tuned for updates");
+                    uiManager.disPlayMessage("The packet was not recognized!");
                     break;
             }
-
         }
     }
 
@@ -114,6 +129,33 @@ public class LL2Daemon implements Observer {
         ll1Daemon.sendFrame(toSendFrame);
     }
 
+    void sendLL2PFrame(Datagram datagram, int destinationAddress, int datagramType) {
+        LL2PFrame frame;
+        switch (datagramType)
+        {
+            case Constants.LL2P_TYPE_IS_LL3P:
+                //for now frame is null
+                frame = null;
+                break;
+            case Constants.LL2P_TYPE_IS_ARP_REQUEST:
+                frame = new LL2PFrame(new LL2PAddressField(destinationAddress,false), new LL2PAddressField(
+                        Constants.LL2P_ROUTER_ADDRESS_VALUE, true), new LL2PTypeField(
+                        Constants.LL2P_TYPE_IS_ARP_REQUEST), new DatagramPayloadField(
+                        datagram), new CRC("1995"));
+                break;
+            case Constants.LL2P_TYPE_IS_ARP_REPLY:
+                frame = new LL2PFrame(new LL2PAddressField(destinationAddress,false), new LL2PAddressField(
+                        Constants.LL2P_ROUTER_ADDRESS_VALUE, true), new LL2PTypeField(
+                        Constants.LL2P_TYPE_IS_ARP_REPLY), new DatagramPayloadField(
+                        datagram), new CRC("1995"));
+                break;
+            default:
+                frame = null;
+        }
+
+        //send a LL3P Frame.
+        ll1Daemon.sendFrame(frame);
+    }
 
     @Override
     public void update(Observable observable, Object o) {
@@ -122,6 +164,7 @@ public class LL2Daemon implements Observer {
         if(observable.getClass() == BootLoader.class){
             uiManager = UIManager.getInstance();
             ll1Daemon = LL1Daemon.getInstance();
+            arpDaemon = ARPDaemon.getInstance();
         }
     }
 }

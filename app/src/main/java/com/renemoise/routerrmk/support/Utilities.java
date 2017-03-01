@@ -68,7 +68,8 @@ public class Utilities {
      * @param inputToChange
      * @return
      *
-     * This function receives any string value and return a string of its ascii values.
+     * This function receives any string value and return a string of its ascii values of each
+     * character
      */
     public static String toAsciiString(String inputToChange) {
 
@@ -101,5 +102,23 @@ public class Utilities {
         return hexValue.toString();
     }
 
+    /**
+     *
+     * @param hexValue
+     * @return
+     *
+     * This method receives a well padded (according to the source length) hex string of an integer,
+     * and returns the ascii characters represented by each byte. (two hex characters)
+     */
+    public static String toAscciiCharactersOfEachHexByte(String hexValue){
+        StringBuilder asciiValue = new StringBuilder();
 
+        for(int i = 0; i < hexValue.length()/2; i++)
+        {
+            int subLen = 2;
+            int temp = Integer.valueOf(hexValue.substring(i*subLen, (i*subLen)+subLen),16);
+            asciiValue.append(((char)temp));
+        }
+        return asciiValue.toString();
+    }
 }

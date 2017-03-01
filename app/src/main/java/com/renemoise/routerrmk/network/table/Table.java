@@ -22,8 +22,11 @@ public class Table extends Observable implements TableInterface{
 
     protected ArrayList<TableRecord> table;
 
+    /**
+     * Creates a reference to the arraylist of tableRecords.
+     */
     public Table() {
-        table = new ArrayList<TableRecord>();
+        table = new ArrayList<>();
     }
 
     //return any list.
@@ -35,62 +38,60 @@ public class Table extends Observable implements TableInterface{
     //return tablerecord for a successful addition.
     @Override
     public TableRecord addItem(TableRecord tableRecord) {
-        try{
-            //Try to see if there is an item.
-            getItem(tableRecord);
-
-            //If it is, remove it and update it.
-            removeItem(tableRecord.getKey());
-            table.add(tableRecord);
+        for(int i = 0; i<table.size(); i++){
+            if (table.get(i).getKey().compareTo(tableRecord.getKey())==0){
+                //If it is present, update time.
+                table.get(i).updateTime();
+                return table.get(i);
+            }
         }
-        catch (LabException e)
-        {
-            table.add(tableRecord);
-            updateObservers();
-        }
-
-        finally {
-            return tableRecord;
-        }
+        //If the record was not found, the exception is caught here.
+        table.add(tableRecord);
+        updateObservers();
+        return tableRecord;
     }
 
     //I could have used table.contains to get an item.
     @Override
     public TableRecord getItem( TableRecord tableRecord) throws LabException {
-        if(table.contains(tableRecord))
-            UIManager.getInstance().disPlayMessage("Record already exist.");
 
-        for(TableRecord record : table)
-        {
-            if(record.equals(tableRecord))
-                return record;
+        /**
+         * I was testing to see if the record would be found by merely using contains.
+         * I also use the for loop which is guaranteed to find the record if it exits.
+         */
+        for(int i = 0; i<table.size(); i++){
+            if (table.get(i).getKey().compareTo(tableRecord.getKey())==0){
+                return table.get(i);
+            }
         }
-        throw  new LabException("RECORD NOT PRESENT");
+        throw new LabException("Record with key: " + Integer.toHexString(tableRecord.getKey()) +
+                " Was not found");
     }
 
     @Override
-    public TableRecord removeItem(int key) throws LabException{
+    public TableRecord removeItem(int key){
 
-        try{
-            TableRecord record = getItem(key);
-            table.remove(record);
-            updateObservers();
-            return record;
-        }
-        catch (LabException e){
-            e.getMessage();
-        }
-        throw new LabException("Item Not Removed!");
-    }
-
-    @Override
-    public TableRecord getItem(int key) throws LabException {
-        for(TableRecord record : table){
-            if (record.getKey().compareTo(key) == 0){
+        for(int i = 0; i<table.size(); i++){
+            if (table.get(i).getKey().compareTo(key)==0){
+                TableRecord record = table.get(i);
+                table.remove(i);
+                updateObservers();
                 return record;
             }
         }
-        throw new LabException("Record with key: " + key + " Was not found");
+        return null;
+    }
+
+
+    @Override
+    public TableRecord getItem(int key) throws LabException {
+        for(int i = 0; i<table.size(); i++){
+            if (table.get(i).getKey().compareTo(key)==0){
+                return table.get(i);
+            }
+        }
+        throw new LabException("Record with key: " + Integer.toHexString(key)
+                + " Was not found");
     }
 
     @Override

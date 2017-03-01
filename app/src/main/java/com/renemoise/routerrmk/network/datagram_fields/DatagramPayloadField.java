@@ -1,9 +1,7 @@
 package com.renemoise.routerrmk.network.datagram_fields;
 
 import com.renemoise.routerrmk.network.Constants;
-import com.renemoise.routerrmk.network.datagram_fields.DatagramHeaderField;
 import com.renemoise.routerrmk.network.datagrams.Datagram;
-import com.renemoise.routerrmk.network.datagrams.TextDatagram;
 import com.renemoise.routerrmk.support.Factory;
 
 /**
@@ -28,10 +26,9 @@ public class DatagramPayloadField implements DatagramHeaderField {
     // datagramfield for the text payload field. Now it is private so that we restrict access
     //to other classes. Only this class can see it and can be used for debugging reasons.
 
-    //TODO: Make it private after asking Prof.
     public DatagramPayloadField(String text)
     {
-        packet = Factory.getInstance().getPayloadDatagram(Constants.LL2P_TYPE_IS_TEXT, text);
+        packet = Factory.getInstance().getDatagram(Constants.TEXT_DATAGRAM, text);
     }
 
     public Datagram getPacket() {
@@ -45,7 +42,7 @@ public class DatagramPayloadField implements DatagramHeaderField {
 
     @Override
     public String explainSelf() {
-        return String.format("LL2P Payload Field. Value: " + toAsciiString());
+        return String.format(packet.toProtocolExplanationString());
     }
 
     @Override

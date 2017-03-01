@@ -29,8 +29,8 @@ import java.util.Observer;
 public class AdjacencyTableUI extends SingleTableUI implements Observer {
     //o	this holds the reference to the ll1Daemon
 
-    private LL1Daemon ll1Daemon;     //TODO: Do we need LL1Daemon now that we are using LL2Daemon to send frame?
-    private LL2Daemon ll2Daemon;    //TODO: Should it have accees to the LL2Daemon as well?
+    private LL1Daemon ll1Daemon;
+    private LL2Daemon ll2Daemon;
 
     public AdjacencyTableUI(Activity parentActivity, int viewID, Table tableToDisplay, LL1Daemon ll1Daemon) {
         super(parentActivity, viewID, tableToDisplay);
@@ -74,13 +74,8 @@ public class AdjacencyTableUI extends SingleTableUI implements Observer {
             int key = record.getLl2pAddress();
 
             //Remove a frame from the table.
-            try {
-                tableToDisplay.removeItem(key);
-            }
-            catch (LabException e)
-            {
-                Log.e(this.toString(), e.getMessage());
-            }
+
+            tableToDisplay.removeItem(key);
 
             //Update the display
             updateView();

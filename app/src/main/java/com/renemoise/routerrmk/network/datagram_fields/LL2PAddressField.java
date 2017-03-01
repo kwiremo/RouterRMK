@@ -32,12 +32,12 @@ public class LL2PAddressField implements DatagramHeaderField {
         try
         {
             this.address = (Integer.valueOf(address,16));
-            this.isSourceAddress =  isSourceAddress;
         }
         catch (NumberFormatException e)
         {
             System.err.println("LL2PAddressField: address could not be parsed");
         }
+        this.isSourceAddress =  isSourceAddress;
     }
 
     @Override
@@ -57,19 +57,10 @@ public class LL2PAddressField implements DatagramHeaderField {
         return explanation;
     }
 
-    //This is not supposed to be implemented in this class.
+    //Hover over the method name for an explanation.
     @Override
     public String toAsciiString() {
-        String hexValue = toHexString();
-        StringBuilder asciiValue = new StringBuilder();
-
-        for(int i = 0; i < hexValue.length()/2; i++)
-        {
-            int subLen = 2;
-            int temp = Integer.valueOf(hexValue.substring(i*subLen, (i*subLen)+subLen),16);
-            asciiValue.append(((char)temp));
-        }
-       return asciiValue.toString();
+        return Utilities.toAscciiCharactersOfEachHexByte(toHexString());
     }
 
     public void setExplanation() {

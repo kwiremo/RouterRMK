@@ -38,7 +38,7 @@ public interface TableInterface {
      * 	The method removes the record containing the matching Key passed as an Integer
      *  The method returns the record if one is removed, else the method returns a null object.
      */
-    TableRecord removeItem(int key) throws LabException;
+    TableRecord removeItem(int key);
 
     /**
      * 	The method returns a TableRecord with the matching key passed as an Integer.

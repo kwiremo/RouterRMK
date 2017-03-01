@@ -8,7 +8,9 @@ import com.renemoise.routerrmk.network.datagram_fields.DatagramHeaderField;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
+import com.renemoise.routerrmk.network.datagram_fields.LL3PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.TextPayload;
+import com.renemoise.routerrmk.network.datagrams.ARPDatagram;
 import com.renemoise.routerrmk.network.datagrams.Datagram;
 import com.renemoise.routerrmk.network.datagrams.TextDatagram;
 import com.renemoise.routerrmk.network.tablerecord.ARPRecord;
@@ -36,6 +38,8 @@ public class Factory extends Observable{
     //This method returns a datagram field. This can be any field for any layer in the router.
     public DatagramHeaderField getDatagramHeaderField(int fieldValue, String contents){
         switch (fieldValue){
+
+            //LL2P Types
             case Constants.LL2P_DESTINATION_ADDRESS:
                 return new LL2PAddressField(contents,false);
             case Constants.LL2P_SOURCE_ADDRESS:
@@ -48,17 +52,26 @@ public class Factory extends Observable{
                 return new TextPayload(contents);
             case Constants.LL2P_CRC_FIELD:
                 return  new CRC(contents);
+
+            //LL3 Types
+            case Constants.LL3P_DESTINATION_ADDRESS:
+                return new LL3PAddressField(contents,false);
+            case Constants.LL3P_SOURCE_ADDRESS:
+                return new LL3PAddressField(contents, true);
+
             default:
                 return null;
         }
     }
 
     //This method returns a datagram payload
-    public Datagram getPayloadDatagram(int payloadType, String contents)
+    public Datagram getDatagram(int DatagramType, String contents)
     {
-        switch (payloadType){
-            case Constants.LL2P_TYPE_IS_TEXT:
+        switch (DatagramType){
+            case Constants.TEXT_DATAGRAM:
                 return new TextDatagram(contents);
+            case Constants.ARP_DATAGRAM:
+                return new ARPDatagram(contents);
             default:
                 return null;
         }

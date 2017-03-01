@@ -5,8 +5,10 @@ import android.util.Log;
 
 import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
+import com.renemoise.routerrmk.network.daemon.ARPDaemon;
 import com.renemoise.routerrmk.network.daemon.LL1Daemon;
 import com.renemoise.routerrmk.network.daemon.LL2Daemon;
+import com.renemoise.routerrmk.network.daemon.Scheduler;
 import com.renemoise.routerrmk.network.datagram_fields.CRC;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
@@ -52,22 +54,26 @@ public class BootLoader extends Observable {
         addObserver(FrameLogger.getInstance());
         addObserver(LL1Daemon.getInstance());
         addObserver(LL2Daemon.getInstance());
+        addObserver(Scheduler.getInstance());
+        testTableProperties();
+
+        addObserver(ARPDaemon.getInstance());
         setChanged();       //setChanged marks this observer as has been changed.
         notifyObservers();  // Notify Observers things have changed. Automatically calls the
                             //clearchanged that set the observer as not changed.
         UIManager.getInstance().disPlayMessage("Now let's roll! RouterRMK is app and running!");
         //TEST COMPONENTS
-        testRouterComponents();
-        testTableProperties();
-        testLl1daemon();
+        //testRouterComponents();
+
+        //testLl1daemon();
     }
 
     private void testLl1daemon() {
 
         LL1Daemon daemon = LL1Daemon.getInstance();
 
-        daemon.addAdjacency("112233", "10.30.27.160");
-        daemon.sendFrame(new LL2PFrame("1122332619958001Dummy Data1234".getBytes()));
+        //daemon.addAdjacency("112233", "10.30.27.160");
+        //daemon.sendFrame(new LL2PFrame("1122332619958001Dummy Data1234".getBytes()));
     }
 
     //THe update method is called by an observable to which this obsever is registered when
@@ -80,23 +86,13 @@ public class BootLoader extends Observable {
     public void testTableProperties()
     {
         //create adjacency records.
-        AdjacencyRecord record1 = new AdjacencyRecord(12345,GetIPAddress.getInstance().getInetAddress("10.30.27.160"));
-        AdjacencyRecord record2 = new AdjacencyRecord(123456,GetIPAddress.getInstance().getInetAddress("10.30.27.160"));
+        AdjacencyRecord record1 = new AdjacencyRecord(new LL2PAddressField
+                ("112233",false).getAddress(),GetIPAddress.getInstance().getInetAddress
+                ("192.168.209.1"));
 
         //Create a table
         Table adjacencyTable = new Table();
         adjacencyTable.addItem(record1);
-        adjacencyTable.addItem(record2);
-        try {
-            Log.e(Constants.LOG_TAG, adjacencyTable.getItem(12345).toString());
-            adjacencyTable.removeItem(12345);
-            Log.e(Constants.LOG_TAG, adjacencyTable.getItem(12345).toString());
-
-        }
-        catch (LabException e)
-        {
-            Log.e(Constants.LOG_TAG, e.getMessage());
-        }
     }
 
     private void testRouterComponents()

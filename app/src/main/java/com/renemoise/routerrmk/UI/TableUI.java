@@ -15,7 +15,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * The TableUI Class has the job of creating and managing the 4 objects, each one of which will manage a tableToDisplay on the screen. Thus it has four objects, each of which is a singleTableUI object.
+ * The TableUI Class has the job of creating and managing the 4 objects, each one of which will
+ * manage a tableToDisplay on the screen. Thus it has four objects, each of which is a singleTableUI
+ * object.
  */
 public class TableUI implements Runnable,Observer {
 
@@ -34,6 +36,9 @@ public class TableUI implements Runnable,Observer {
     @Override
     public void run() {
 
+        //TODO: Both needs to call updateview.
+        adjacencyUI.updateView();
+        arpTableUI.updateView();
     }
 
     @Override
@@ -43,5 +48,10 @@ public class TableUI implements Runnable,Observer {
                 R.id.idAdjacencyTableListView,
                 LL1Daemon.getInstance().getAdjacencyTable(),
                 LL1Daemon.getInstance());
+
+        arpTableUI = new SingleTableUI(ParentActivity.getParentActivity(),
+                R.id.idARPListView,ARPDaemon.getInstance().getArpTable());
     }
+
+
 }

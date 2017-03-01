@@ -49,11 +49,7 @@ public class AddAdjacencyDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //TODO: COMMENTED OUT THE SUPER RETURN.
-        //return super.onCreateView(inflater, container, savedInstanceState);
 
-        //TODO: Why not attach it to the root.
-        //TODO: Explain what the rootview is.
         // Inflate the layout xml file you built.
         View rootView = inflater.inflate(R.layout.adjacency_entries_dialogue, container,false);
 

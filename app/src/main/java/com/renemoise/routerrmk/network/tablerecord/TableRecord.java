@@ -21,13 +21,14 @@ public class TableRecord implements TableRecordInterface {
 
     // This class simply calls the method “updateTime()” to set the value of lastTimeTouched.
     public TableRecord() {
-        updateTIme();
+        updateTime();
     }
 
     /**
      *     This method sets the lastTimeTouched to the current time.
      */
-    private void updateTIme() {
+    //TODO: Is this supposed to only be private?
+    public void updateTime() {
         lastTimeTouched = Utilities.getTimeInSeconds();
     }
 

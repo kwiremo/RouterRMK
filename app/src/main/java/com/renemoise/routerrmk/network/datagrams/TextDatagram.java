@@ -11,12 +11,10 @@ import com.renemoise.routerrmk.support.Utilities;
 public class TextDatagram implements Datagram {
 
     //	This is a DatagramHeaderField object that contains only text.
-    //TODO: Ask How to implement this.
     //private TextPayload payload;
     private String payload;
 
     public TextDatagram(String payload) {
-        //TODO: Uncomment if the problem above is resolved.
         //this.payload = new TextPayload(payload);
         this.payload = payload;
     }
@@ -28,7 +26,7 @@ public class TextDatagram implements Datagram {
 
     @Override
     public String toProtocolExplanationString() {
-        return String.format("Text datagram. Value: {0}", payload);
+        return String.format("Text datagram. Value: %s", payload);
     }
 
     @Override

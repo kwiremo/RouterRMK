@@ -83,6 +83,12 @@ public class Constants implements Observer {
     public static final int LL2P_PAYLOAD_FIELD = 4;
     public static final int LL2P_TEXT_PAYLOAD_FIELD = 5;
     public static final int LL2P_CRC_FIELD = 6;
+
+    //LL3P Information
+    public static final int LL3P_DESTINATION_ADDRESS = 7;
+    public static final int LL3P_SOURCE_ADDRESS = 8;
+
+    public static final String LL3P_ROUTER_ADDRESS_VALUE = "2619";
     public static final String LL2P_ROUTER_ADDRESS_VALUE = "261995";
 
     //LL2P FIELD LENGTH IN BYTES
@@ -115,4 +121,17 @@ public class Constants implements Observer {
     //COMMUNICATION
     public static final int UDP_PORT = 49999;
     public static final int REMOTE_UDP_PORT = 49999;
+
+    //ARP RECORDS
+    public static final int MAX_AGE_ALLOWED_ARP_RECORD = 5;
+
+    //DATAGRAM IDENTIFICATIONS
+    public static final int TEXT_DATAGRAM  = 14;
+    public static final int ARP_DATAGRAM = 15;
+
+    //SCHEDULER
+    public static final int THREAD_COUNT = 25;
+    public static final int ROUTER_BOOT_TIME = 3;
+    public static final int UI_UPDATE_INTERVAL = 1;
+    public static final int ARP_DAEMON_UPDATE_INTERVAL = 5;
 }

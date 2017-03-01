@@ -76,16 +76,18 @@ public class SingleTableUI implements Observer{
     //o	this method safely reloads the array and updates the screen. It ensure this is done on the
     // UI thread
     public void updateView(){
-        // Force all our work here to be on the UI thread!
+        // Force all our work here to be on the UI thread! This function helps you to run some
+        // code on the UI thread without using handlers or intentservices. This can greatly help
+        // when running in Async background task.
         parentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
-                //TODO: What does it really do?
                 // notify the OS that the dataset has changed. It will update screen!
                 //In our implementation, this causes the adapter to reload the arrayList into the
                 // screen widget.
                 adapter.notifyDataSetChanged();
+                //tableListViewWidget.invalidate();   //TODO: Make sure you delete this.
             }
         });
     }

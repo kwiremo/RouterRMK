@@ -45,7 +45,7 @@ public class UIManager implements Observer {
         disPlayMessage(message, Toast.LENGTH_LONG); // default is long time
     }
 
-    //TODO: IT is not doing anything why?
+    //This will be called later. For now it is an empty
     private void setUpWidgets(){
 
     }

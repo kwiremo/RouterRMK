@@ -86,7 +86,6 @@ public class SnifferUI implements Observer {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
             //Retrieve the frame that was clicked.
-            //TODO: We use framelogger, right?
             LL2PFrame frameSelected = frameLogger.getFrameList().get(i);
 
             //Set the TextView in the middle window’s text to that string.
