@@ -1,6 +1,7 @@
 package com.renemoise.routerrmk.network.daemon;
 
 import com.renemoise.routerrmk.UI.TableUI;
+import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.support.BootLoader;
 
@@ -29,7 +30,7 @@ public class Scheduler implements Observer {
     public void update(Observable observable, Object o) {
         if(observable.getClass().equals(BootLoader.class)){
             threadManager = new ScheduledThreadPoolExecutor(Constants.THREAD_COUNT);
-            tableUI = new TableUI();
+            tableUI = UIManager.getInstance().getTableUI();
             arpDaemon = ARPDaemon.getInstance();
             lrpDaemon = LRPDaemon.getInstance();
 

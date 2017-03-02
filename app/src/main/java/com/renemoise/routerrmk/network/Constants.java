@@ -88,7 +88,7 @@ public class Constants implements Observer {
     public static final int LL3P_DESTINATION_ADDRESS = 7;
     public static final int LL3P_SOURCE_ADDRESS = 8;
 
-    public static final String LL3P_ROUTER_ADDRESS_VALUE = "2619";
+    public static final String LL3P_ROUTER_ADDRESS_VALUE = "301";
     public static final String LL2P_ROUTER_ADDRESS_VALUE = "261995";
 
     //LL2P FIELD LENGTH IN BYTES
@@ -123,7 +123,7 @@ public class Constants implements Observer {
     public static final int REMOTE_UDP_PORT = 49999;
 
     //ARP RECORDS
-    public static final int MAX_AGE_ALLOWED_ARP_RECORD = 5;
+    public static final int MAX_AGE_ALLOWED_ARP_RECORD = 30;
 
     //DATAGRAM IDENTIFICATIONS
     public static final int TEXT_DATAGRAM  = 14;

@@ -61,6 +61,6 @@ public class DatagramPayloadField implements DatagramHeaderField {
 
     @Override
     public String toString() {
-        return toAsciiString();
+        return packet.toString();
     }
 }

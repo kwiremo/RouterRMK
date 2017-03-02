@@ -36,6 +36,6 @@ public class TextDatagram implements Datagram {
 
     @Override
     public String toString() {
-        return toHexString();
+        return payload;
     }
 }

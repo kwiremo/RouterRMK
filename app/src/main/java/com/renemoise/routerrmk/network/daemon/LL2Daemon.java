@@ -46,7 +46,7 @@ public class LL2Daemon implements Observer {
     public void processLL2PFrame(LL2PFrame receivedFrame) {
 
         String dest = receivedFrame.getDestinationAddress().toHexString();
-        if(!receivedFrame.getDestinationAddress().toHexString().equals(Constants.LL2P_ROUTER_ADDRESS_VALUE)){
+        if(!dest.equals(Constants.LL2P_ROUTER_ADDRESS_VALUE)){
             uiManager.disPlayMessage("Discarded packet from " +
                     receivedFrame.getSourceAddress().toHexString());
         }
