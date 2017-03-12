@@ -25,7 +25,7 @@ public class CRCTest {
         String result = test.toAsciiString();
         String expected = "9798";
         assertEquals(expected, result);
-    }sa
+    }
 
 
 }

@@ -4,6 +4,7 @@ package com.renemoise.routerrmk.network.table;
  * Created by Rene Moise on 2/23/2017.
  */
 
+import android.app.ActionBar;
 import android.util.Log;
 
 import com.renemoise.routerrmk.network.Constants;
@@ -12,6 +13,7 @@ import com.renemoise.routerrmk.network.tablerecord.TableRecord;
 import com.renemoise.routerrmk.support.LabException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * This class is capable of examining the age of the records and expire them if the time exceeds
@@ -32,20 +34,19 @@ public class TimedTable extends Table {
      *     It returns an array list of those removed records.  This is done because later the
      *     routing protocol daemon will need to know when things expire.
      */
+    //TODO: NEED TO CHECK HOW THE Size decreases with a removal of a packet.
     public ArrayList<TableRecord> expireRecords(int maxAgeAllowed){
         ArrayList<TableRecord> trash = new ArrayList<>();
 
-        for (int i = 0; i<table.size(); i++) {
-            if(table.get(i).getAgeInSeconds() > maxAgeAllowed){
-                TableRecord record = table.get(i);
+        for(Iterator<TableRecord> iterator = getTableArrayList().iterator(); iterator.hasNext();){
+            TableRecord record = iterator.next();
+            if(record.getAgeInSeconds() >= maxAgeAllowed){
                 trash.add(record);
-                removeItem(table.get(i).getKey());
+                iterator.remove();
             }
         }
-        updateObservers();
 
-        //setChanged();
-        //updateObservers();
+        updateObservers();
         return trash;
     }
 

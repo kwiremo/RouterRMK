@@ -9,6 +9,9 @@ import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
 import com.renemoise.routerrmk.network.datagram_fields.LL3PAddressField;
+import com.renemoise.routerrmk.network.datagram_fields.LRPRouteCount;
+import com.renemoise.routerrmk.network.datagram_fields.LRPSequenceNumber;
+import com.renemoise.routerrmk.network.datagram_fields.NetworkDistancePair;
 import com.renemoise.routerrmk.network.datagram_fields.TextPayload;
 import com.renemoise.routerrmk.network.datagrams.ARPDatagram;
 import com.renemoise.routerrmk.network.datagrams.Datagram;
@@ -58,6 +61,12 @@ public class Factory extends Observable{
                 return new LL3PAddressField(contents,false);
             case Constants.LL3P_SOURCE_ADDRESS:
                 return new LL3PAddressField(contents, true);
+            case Constants.SEQUENCE_NUMBER:
+                return new LRPSequenceNumber(contents);
+            case Constants.COUNT:
+                return new LRPRouteCount(contents);
+            case Constants.NETWORK_DISTANCE:
+                return new NetworkDistancePair(contents);
 
             default:
                 return null;
@@ -91,8 +100,8 @@ public class Factory extends Observable{
             case Constants.ARP_RECORD:
                 return new ARPRecord();
 
-            case Constants.ROUTING_RECORD:
-                return new RoutingRecord();
+            //case Constants.ROUTING_RECORD:
+                //return new RoutingRecord();
 
             case  Constants.FORWARDING_RECORD:
                 return new ForwardingRecord();

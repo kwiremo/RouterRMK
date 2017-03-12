@@ -134,4 +134,20 @@ public class Constants implements Observer {
     public static final int ROUTER_BOOT_TIME = 3;
     public static final int UI_UPDATE_INTERVAL = 1;
     public static final int ARP_DAEMON_UPDATE_INTERVAL = 5;
+
+    //LRP Packet Field Length
+    public static final int SOURCE_LL3P_OFFSET = 0;
+    public static final int SOURCE_LL3P_LENGTH = 4;
+    public static final int SEQUENCE_NUMBER_OFFSET = 4;
+    public static final int SEQUENCE_NUMBER_LENGTH = 1;
+    public static final int COUNT_OFFSET = 5;
+    public static final int COUNT_LENGTH = 1;
+    public static final int PAIR_OFFSET = 6;
+    public static final int PAIR_LENGTH = 4;
+
+    //LRP PACKET HEADERS IDENTIFIERS
+    //LL3 address field defined above.
+    public static final int SEQUENCE_NUMBER = 61;
+    public static final int COUNT = 62;
+    public static final int NETWORK_DISTANCE = 63;
 }

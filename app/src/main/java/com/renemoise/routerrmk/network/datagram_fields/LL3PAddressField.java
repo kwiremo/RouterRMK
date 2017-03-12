@@ -87,7 +87,7 @@ public class LL3PAddressField implements DatagramHeaderField {
     }
 
     public int getHostNumber() {
-        return Integer.valueOf(toHexString().substring(2,3),16);
+        return Integer.valueOf(toHexString().substring(2,4),16);
     }
 
     public int getAddress() {
