@@ -16,7 +16,7 @@ import java.util.zip.CheckedOutputStream;
  * Created by Rene Moise on 3/7/2017.
  */
 
-public class LRPPacket implements Datagram {
+public class LRPDatagram implements Datagram {
 
 
     //This contains the LL3P address of the router that originated this update
@@ -35,7 +35,7 @@ public class LRPPacket implements Datagram {
      *  This is  used when deconstructing packets that are received.
      * @param lrpPacket
      */
-    public LRPPacket(byte[]  lrpPacket) {
+    public LRPDatagram(byte[]  lrpPacket) {
         routes = new ArrayList<>();
         String lrppacket = new String(lrpPacket);
 
@@ -61,8 +61,8 @@ public class LRPPacket implements Datagram {
     }
 
     //	Constructor to create LRP Packets for transmission from this router to adjacent routers.
-    public LRPPacket(LL3PAddressField sourceLL3P, LRPSequenceNumber sequenceNumber,
-                     LRPRouteCount count, List<NetworkDistancePair> routes) {
+    public LRPDatagram(LL3PAddressField sourceLL3P, LRPSequenceNumber sequenceNumber,
+                       LRPRouteCount count, List<NetworkDistancePair> routes) {
         this.sourceLL3P = sourceLL3P;
         this.sequenceNumber = sequenceNumber;
         this.count = count;

@@ -10,6 +10,7 @@ import com.renemoise.routerrmk.network.datagram_fields.TextPayload;
 import com.renemoise.routerrmk.network.datagrams.ARPDatagram;
 import com.renemoise.routerrmk.network.datagrams.Datagram;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
+import com.renemoise.routerrmk.network.datagrams.LRPDatagram;
 import com.renemoise.routerrmk.support.BootLoader;
 import com.renemoise.routerrmk.support.Factory;
 import com.renemoise.routerrmk.support.LabException;
@@ -64,10 +65,11 @@ public class LL2Daemon implements Observer {
                     uiManager.disPlayMessage("Unsupported frame Received. Stay tuned for updates");
                     break;
                 case Constants.LL2P_TYPE_IS_RESERVED:
-                    uiManager.disPlayMessage("Unsupported frame Received. Stay tuned for updates");
+                    uiManager.disPlayMessage("The type is reserved! No further processing will occur");
                     break;
                 case Constants.LL2P_TYPE_IS_LRP:
-                    uiManager.disPlayMessage("Unsupported frame Received. Stay tuned for updates");
+                    LRPDaemon.getInstance().processLRPPacket((LRPDatagram)
+                            (receivedFrame.getPayload().getPacket()));
                     break;
                 case Constants.LL2P_TYPE_IS_ARP_REQUEST:
                     arpDaemon.processARPRequest(receivedFrame.getSourceAddress().getAddress(),
@@ -149,6 +151,11 @@ public class LL2Daemon implements Observer {
                         Constants.LL2P_TYPE_IS_ARP_REPLY), new DatagramPayloadField(
                         datagram), new CRC("1995"));
                 break;
+            case Constants.LL2P_TYPE_IS_LRP:
+                frame = new LL2PFrame(new LL2PAddressField(destinationAddress,false), new LL2PAddressField(
+                        Constants.LL2P_ROUTER_ADDRESS_VALUE, true), new LL2PTypeField(
+                        Constants.LL2P_TYPE_IS_LRP), new DatagramPayloadField(
+                        datagram), new CRC("1995"));
             default:
                 frame = null;
         }

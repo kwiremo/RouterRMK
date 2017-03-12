@@ -42,6 +42,7 @@ public class ARPDaemon extends Observable implements Observer,Runnable{
         // reference to the LL2PDaemon.
         if(observable.getClass().equals(BootLoader.class)){
             ll2Daemon = LL2Daemon.getInstance();
+            addObserver(LRPDaemon.getInstance());   //TODO: Added observer here.
             testARP();  //TODO: Remove after testing.
         }
     }
@@ -72,8 +73,8 @@ public class ARPDaemon extends Observable implements Observer,Runnable{
 
     @Override
     public void run() {
-        arpTable.expireRecords(Constants.MAX_AGE_ALLOWED_ARP_RECORD);
-
+        ArrayList<TableRecord> trashedRecords = arpTable.expireRecords(Constants.MAX_AGE_ALLOWED_ARP_RECORD);
+        notifyObservers(trashedRecords);    //TODO: I passed deleted records here.
     }
 
     /**

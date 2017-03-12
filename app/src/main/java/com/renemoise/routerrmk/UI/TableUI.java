@@ -4,11 +4,10 @@ package com.renemoise.routerrmk.UI;
  * Created by Rene Moise on 2/9/2017.
  */
 
-import android.provider.ContactsContract;
-
 import com.renemoise.routerrmk.R;
 import com.renemoise.routerrmk.network.daemon.ARPDaemon;
 import com.renemoise.routerrmk.network.daemon.LL1Daemon;
+import com.renemoise.routerrmk.network.daemon.LRPDaemon;
 import com.renemoise.routerrmk.support.ParentActivity;
 
 import java.util.Observable;
@@ -39,6 +38,8 @@ public class TableUI implements Runnable,Observer {
         //TODO: Both needs to call updateview.
         adjacencyUI.updateView();
         arpTableUI.updateView();
+        routingTableUI.updateView();
+        forwardingUI.updateView();
     }
 
     @Override
@@ -51,7 +52,11 @@ public class TableUI implements Runnable,Observer {
 
         arpTableUI = new SingleTableUI(ParentActivity.getParentActivity(),
                 R.id.idARPListView,ARPDaemon.getInstance().getArpTable());
+
+        routingTableUI = new SingleTableUI(ParentActivity.getParentActivity(),
+                R.id.idRoutingTableListView, LRPDaemon.getInstance().getRoutingTable());
+
+        forwardingUI = new SingleTableUI(ParentActivity.getParentActivity(),
+                R.id.idForwardingListView, LRPDaemon.getInstance().getForwardingTable());
     }
-
-
 }

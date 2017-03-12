@@ -8,6 +8,7 @@ import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.daemon.ARPDaemon;
 import com.renemoise.routerrmk.network.daemon.LL1Daemon;
 import com.renemoise.routerrmk.network.daemon.LL2Daemon;
+import com.renemoise.routerrmk.network.daemon.LRPDaemon;
 import com.renemoise.routerrmk.network.daemon.Scheduler;
 import com.renemoise.routerrmk.network.datagram_fields.CRC;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
@@ -55,8 +56,8 @@ public class BootLoader extends Observable {
         addObserver(LL1Daemon.getInstance());
         addObserver(LL2Daemon.getInstance());
         addObserver(Scheduler.getInstance());
-        testTableProperties();
-
+        //testTableProperties();
+        addObserver(LRPDaemon.getInstance());
         addObserver(ARPDaemon.getInstance());
         setChanged();       //setChanged marks this observer as has been changed.
         notifyObservers();  // Notify Observers things have changed. Automatically calls the

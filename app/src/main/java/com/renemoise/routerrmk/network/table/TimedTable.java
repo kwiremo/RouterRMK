@@ -57,14 +57,12 @@ public class TimedTable extends Table {
      * This method will find the associated record specified by the key passed in.
      * It will update its age.
      */
-    void touch(int key){
+    public void touch(int key){
 
-        try{
-            TableRecord record = getItem(key);
-            //record.updateTime();
-        }
-        catch (LabException e){
-            Log.e(Constants.LOG_TAG, "RECORD NOT TOUCHED" + e.getMessage());
+        for(int i = 0; i <table.size(); i++){
+            if(table.get(i).getKey() == key){
+                table.get(i).updateTime();
+            }
         }
     }
 }
