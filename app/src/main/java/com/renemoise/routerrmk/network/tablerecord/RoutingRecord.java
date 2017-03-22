@@ -47,6 +47,7 @@ public class RoutingRecord extends TableRecord {
 
     @Override
     public String toString() {
+        //TODO: Make it cleaner.
         return networkDistancePair.toString() + " " + nextHop;
     }
 }

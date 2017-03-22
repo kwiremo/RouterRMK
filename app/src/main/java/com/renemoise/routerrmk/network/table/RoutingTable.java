@@ -3,11 +3,8 @@ package com.renemoise.routerrmk.network.table;
 import com.renemoise.routerrmk.network.tablerecord.RoutingRecord;
 import com.renemoise.routerrmk.network.tablerecord.TableRecord;
 import com.renemoise.routerrmk.support.LabException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -175,9 +172,26 @@ public class RoutingTable extends TimedTable {
         throw new LabException("No Route Found");
     }
 
+    public void addRoutesToForwarding(List<RoutingRecord> routes){
+        for(int i = 0; i < routes.size(); i++) {
+            RoutingRecord bestNewRecord = routes.get(i);
+            for(int j = 0; j<table.size(); j++){
+                RoutingRecord forwRecord = (RoutingRecord) table.get(j);
+                if(forwRecord.getNetworkNumber() == bestNewRecord.getNetworkNumber()){
+                    table.remove(forwRecord);
+                    table.add(bestNewRecord);
+                    break;
+                }
+            }
+
+            //If the new record does not exist, add it.
+            table.add(bestNewRecord);
+        }
+    }
+
     // This adds all routes specified to the table, following known rules for route updating.
     public void	addRoutes(List<RoutingRecord> routes){
-        for(int i = 0; i < routes.size(); i++) {
+        for(int i = 0; i<routes.size(); i++){
             addNewRoute(routes.get(i));
         }
     }

@@ -155,4 +155,7 @@ public class Constants implements Observer {
     public static final int SEQUENCE_NUMBER = 61;
     public static final int COUNT = 62;
     public static final int NETWORK_DISTANCE = 63;
+
+
+    public static final int ADJACENT_HOP_DISTANCE = 1;
 }

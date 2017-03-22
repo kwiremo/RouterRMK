@@ -25,6 +25,11 @@ public class LRPSequenceNumber implements DatagramHeaderField {
         this.sequenceNumber = Integer.valueOf(sequenceNumber,16);
     }
 
+    //TODO: Added it myself.
+    public LRPSequenceNumber(int sequenceNumber){
+        this.sequenceNumber = sequenceNumber;
+    }
+
     @Override
     public String toHexString() {
         return Integer.toHexString(sequenceNumber);

@@ -4,13 +4,19 @@ import android.util.Log;
 
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagram_fields.LL3PAddressField;
+import com.renemoise.routerrmk.network.datagram_fields.LRPRouteCount;
+import com.renemoise.routerrmk.network.datagram_fields.LRPSequenceNumber;
+import com.renemoise.routerrmk.network.datagram_fields.NetworkDistancePair;
 import com.renemoise.routerrmk.network.datagrams.LRPDatagram;
 import com.renemoise.routerrmk.network.table.RoutingTable;
+import com.renemoise.routerrmk.network.table.TimedTable;
+import com.renemoise.routerrmk.network.tablerecord.ARPRecord;
 import com.renemoise.routerrmk.network.tablerecord.RoutingRecord;
 import com.renemoise.routerrmk.network.tablerecord.TableRecord;
 import com.renemoise.routerrmk.support.BootLoader;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -87,15 +93,48 @@ public class LRPDaemon implements Runnable, Observer{
         // This information is gained from the ARP table and your router is considered the source
         // for this information. The neighbor is, of course, the next hop.
 	    //todo: IMPLEMENT THIS.
+        for (TableRecord record:arpDaemon.getARPRecordList()) {
+            LL3PAddressField adjacentHop = new LL3PAddressField(
+                    Integer.toHexString(((ARPRecord)record).getLl3pAddress()), true);
+            RoutingRecord temp = new RoutingRecord(adjacentHop.getNetworkNumber(),
+                    Constants.ADJACENT_HOP_DISTANCE, new LL3PAddressField(
+                    Constants.LL3P_ROUTER_ADDRESS_VALUE, true).getAddress());
+            routeTable.addNewRoute(temp);
+        }
+
 
         //Get the list of best routes from the routing table and hand it to the forwarding table.
         // The forwarding table will use this list to replace, update, or add routes.
         //todo: implement this.
+        List<RoutingRecord> bestRoutes = routeTable.getBestRoutes();
+        forwardingTable.addRoutes(bestRoutes);
 
         //Using the list of adjacent nodes from step 4 above send a routing update to every
         // known neighbor. You will exclude routes learned from that router in this update in order
         // to avoid the count-to-infinity problem that exists with Distance-Vector routing protocols.
         //todo: implement this.
+
+        for (TableRecord record:arpDaemon.getARPRecordList()) {
+            LL3PAddressField myAddress = new LL3PAddressField(
+                    Constants.LL3P_ROUTER_ADDRESS_VALUE, true);
+            LRPSequenceNumber lrpSequenceNumber = new LRPSequenceNumber(getCurrentSequenceNumber());
+
+            //Exclude all the routes learned from  this node.
+            List<RoutingRecord> listToSend = forwardingTable.getRouteListExcluding(record.getKey());
+            LRPRouteCount lrpCount = new LRPRouteCount(Integer.toHexString(listToSend.size()));
+
+            ArrayList<NetworkDistancePair> netDistPairs = new ArrayList<>();
+            for(int i = 0; i  < listToSend.size(); i++){
+                RoutingRecord temp = listToSend.get(i);
+                netDistPairs.add(new NetworkDistancePair(temp.getNetworkNumber(), temp.getDistance()));
+            }
+
+            //Create an LRP datagram to send
+            LRPDatagram lrpDatagram = new LRPDatagram(myAddress, lrpSequenceNumber, lrpCount,
+                    netDistPairs);
+            layer2Daemon.sendLL2PFrame(lrpDatagram, record.getKey(), Constants.LL2P_TYPE_IS_LRP);
+        }
+
     }
 
     @Override
@@ -166,7 +205,7 @@ public class LRPDaemon implements Runnable, Observer{
      * @param lrp
      */
     public void processLRP(byte[] lrp){
-        //TODO: Inplement this later.
+        processLRPPacket(new LRPDatagram(lrp));
     }
 
     /**
@@ -196,7 +235,20 @@ public class LRPDaemon implements Runnable, Observer{
      * @param lrp
      */
     public void processLRPPacket(LRPDatagram lrp){
-        //TODO: Implement this.
+        List<NetworkDistancePair> receivedRoutes = lrp.getRoutes();
+        List<RoutingRecord> newRecords = new ArrayList<>();
+        for(int i = 0; i < receivedRoutes.size(); i++){
+            NetworkDistancePair aPair = receivedRoutes.get(i);
+            RoutingRecord temp = new RoutingRecord(aPair.getNetwork(),
+                    aPair.getDistance(), lrp.getSourceLL3P().getAddress());
+            newRecords.add(temp);
+        }
+        routeTable.addRoutes(newRecords);
+        forwardingTable.addRoutes(routeTable.getBestRoutes());
     }
 
+    private int getCurrentSequenceNumber(){
+        sequenceNumber++;
+        return sequenceNumber % 16;
+    }
 }
