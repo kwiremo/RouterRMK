@@ -9,13 +9,18 @@ import com.renemoise.routerrmk.support.Factory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.zip.CheckedOutputStream;
 
 /**
  * Created by Rene Moise on 3/7/2017.
  */
 
+/**
+ * This class will be used by routers to send routing routes updates to each other. The LRP update
+ * packet (shown below with 14 route updates) consists of the source LL3P address of the sending
+ * router, A four bit sequence number which is used to differentiate between successive updates, a
+ * four bit value indicating how many routes are in the update (max 15), and a list of
+ * address/distance pairs
+ */
 public class LRPDatagram implements Datagram {
 
 

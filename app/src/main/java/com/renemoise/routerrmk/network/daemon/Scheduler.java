@@ -13,6 +13,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Rene Moise on 2/23/2017.
  */
+
+/**
+ * The scheduler spins off the threads that wake up every specified seconds to run the runnable
+ * methods. For instance the lrpdaemon has to be updated every second. This class is responsible
+ * to start a thread responsible of that task.
+ */
 public class Scheduler implements Observer {
     private static Scheduler ourInstance = new Scheduler();
     public static Scheduler getInstance() {

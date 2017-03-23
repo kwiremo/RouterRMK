@@ -14,6 +14,12 @@ import static org.junit.Assert.*;
 /**
  * Created by Rene Moise on 3/9/2017.
  */
+
+/**
+ * This routing test does not follow the conventional testing practices. It is intended to take
+ * advantage of the console output given by the system and also of not having to connect the
+ * tablet for testing operations that do not require other routers.
+ */
 public class RoutingTableTest {
     @Test
     public void getBestRoutes() throws Exception {

@@ -12,6 +12,12 @@ import java.util.Map;
  * Created by Rene Moise on 3/8/2017.
  */
 
+/**
+ * The Routing table Class will be used to store routing tables and Forwarding tables. the
+ * routing table contains all the routes the router knows. The Forwarding table contains the
+ * best known route to every network known. This class is responsible of the routing and forwarding
+ * table operations such as adding, removing, replacing, and expiring records.
+ */
 public class RoutingTable extends TimedTable {
     public RoutingTable() {
         super();
@@ -179,7 +185,7 @@ public class RoutingTable extends TimedTable {
                 RoutingRecord forwRecord = (RoutingRecord) table.get(j);
                 if(forwRecord.getNetworkNumber() == bestNewRecord.getNetworkNumber()){
                     table.remove(forwRecord);
-                    table.add(bestNewRecord);
+                    addNewRoute(bestNewRecord);
                     break;
                 }
             }

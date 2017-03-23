@@ -18,6 +18,11 @@ import java.util.Observer;
  * Created by Rene Moise on 2/1/2017.
  */
 
+/**
+ * This is a base table for all other tables such as adjacency table, arp table, routing table,etc.
+ * It implements the TableInterface. Other classes will extend this base class for an advantage of
+ * reusing code.
+ */
 public class Table extends Observable implements TableInterface{
 
     protected ArrayList<TableRecord> table;

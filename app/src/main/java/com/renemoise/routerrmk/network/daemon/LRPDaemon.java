@@ -9,20 +9,23 @@ import com.renemoise.routerrmk.network.datagram_fields.LRPSequenceNumber;
 import com.renemoise.routerrmk.network.datagram_fields.NetworkDistancePair;
 import com.renemoise.routerrmk.network.datagrams.LRPDatagram;
 import com.renemoise.routerrmk.network.table.RoutingTable;
-import com.renemoise.routerrmk.network.table.TimedTable;
 import com.renemoise.routerrmk.network.tablerecord.ARPRecord;
 import com.renemoise.routerrmk.network.tablerecord.RoutingRecord;
 import com.renemoise.routerrmk.network.tablerecord.TableRecord;
 import com.renemoise.routerrmk.support.BootLoader;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 /**
  * Created by Rene Moise on 2/23/2017.
+ */
+
+/**
+ * This is a class that supports the routing class. This daemon has a class that runs every 10
+ * second. Whenever it runs, it expires records in both the forwarding table and the routing table
+ * and also sends the routes information to other routers.
  */
 public class LRPDaemon implements Runnable, Observer{
     private static LRPDaemon ourInstance = new LRPDaemon();
@@ -92,7 +95,6 @@ public class LRPDaemon implements Runnable, Observer{
 	    //Add a route to the routing table for each adjacent router’s network, at a distance of one.
         // This information is gained from the ARP table and your router is considered the source
         // for this information. The neighbor is, of course, the next hop.
-	    //todo: IMPLEMENT THIS.
         for (TableRecord record:arpDaemon.getARPRecordList()) {
             LL3PAddressField adjacentHop = new LL3PAddressField(
                     Integer.toHexString(((ARPRecord)record).getLl3pAddress()), true);
@@ -105,9 +107,9 @@ public class LRPDaemon implements Runnable, Observer{
 
         //Get the list of best routes from the routing table and hand it to the forwarding table.
         // The forwarding table will use this list to replace, update, or add routes.
-        //todo: implement this.
+
         List<RoutingRecord> bestRoutes = routeTable.getBestRoutes();
-        forwardingTable.addRoutes(bestRoutes);
+        forwardingTable.addRoutesToForwarding(bestRoutes);
 
         //Using the list of adjacent nodes from step 4 above send a routing update to every
         // known neighbor. You will exclude routes learned from that router in this update in order

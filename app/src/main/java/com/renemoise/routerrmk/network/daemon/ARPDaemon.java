@@ -21,7 +21,8 @@ import java.util.Observer;
  */
 
 /**
- * The ARP daemon is responsible for replying to the arp requests or sending arp requests.
+ * The ARP daemon is responsible for replying to the arp requests or sending arp requests. This
+ * class also is responsible of expiring old records from the arp table.
  */
 public class ARPDaemon extends Observable implements Observer,Runnable{
     private static ARPDaemon ourInstance = new ARPDaemon();
