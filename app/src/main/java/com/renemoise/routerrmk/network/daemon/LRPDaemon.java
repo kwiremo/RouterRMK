@@ -82,16 +82,22 @@ public class LRPDaemon implements Runnable, Observer{
     }
 
     private void updateRoutes() {
+
+        boolean changeMarked = false;
+        boolean routeTableChanged = false;
         // Expire all routes in all tables
         forwardingTable.expireRecords(Constants.MAX_AGE_ALLOWED_LRP_RECORD);
         routeTable.expireRecords(Constants.MAX_AGE_ALLOWED_LRP_RECORD);
 
         // Add a route to the routing table (or reset its timer) for this router’s network, at a
         // distance of zero.
-        routeTable.addNewRoute(new RoutingRecord(new LL3PAddressField
+        routeTableChanged = routeTable.addNewRoute(new RoutingRecord(new LL3PAddressField
                 (Constants.LL3P_ROUTER_ADDRESS_VALUE, true).getNetworkNumber(),
                 Constants.ROUTER_DISTANCE, new LL3PAddressField(
                         Constants.LL3P_ROUTER_ADDRESS_VALUE, true).getAddress()));
+        if(routeTableChanged)
+            changeMarked = true;
+
 
 	    //Add a route to the routing table for each adjacent router’s network, at a distance of one.
         // This information is gained from the ARP table and your router is considered the source
@@ -103,15 +109,19 @@ public class LRPDaemon implements Runnable, Observer{
             RoutingRecord temp = new RoutingRecord(adjacentHop.getNetworkNumber(),
                     Constants.ADJACENT_HOP_DISTANCE, new LL3PAddressField(
                     Constants.LL3P_ROUTER_ADDRESS_VALUE, true).getAddress());
-            routeTable.addNewRoute(temp);
+            routeTableChanged = routeTable.addNewRoute(temp);
+            if(routeTableChanged)
+                changeMarked = true;
         }
 
 
         //Get the list of best routes from the routing table and hand it to the forwarding table.
         // The forwarding table will use this list to replace, update, or add routes.
 
-        List<RoutingRecord> bestRoutes = routeTable.getBestRoutes();
-        forwardingTable.addRoutesToForwarding(bestRoutes);
+        if(changeMarked) {
+            List<RoutingRecord> bestRoutes = routeTable.getBestRoutes();
+            forwardingTable.addRoutesToForwarding(bestRoutes);
+        }
 
         //Using the list of adjacent nodes from step 4 above send a routing update to every
         // known neighbor. You will exclude routes learned from that router in this update in order
@@ -259,12 +269,18 @@ public class LRPDaemon implements Runnable, Observer{
         List<RoutingRecord> newRecords = new ArrayList<>();
         for(int i = 0; i < receivedRoutes.size(); i++){
             NetworkDistancePair aPair = receivedRoutes.get(i);
+
+            //Note that we are adding a 1 on distance since the received distance is how far the
+            //the network is from the router that sent that route. Since it is our next hop, we add
+            //a one.
             RoutingRecord temp = new RoutingRecord(aPair.getNetwork(),
-                    aPair.getDistance(), lrp.getSourceLL3P().getAddress());
+                    aPair.getDistance()+1, lrp.getSourceLL3P().getAddress());
             newRecords.add(temp);
         }
-        routeTable.addRoutes(newRecords);
-        forwardingTable.addRoutesToForwarding(routeTable.getBestRoutes());
+        boolean routeTableChanged =  false;
+        routeTableChanged = routeTable.addRoutes(newRecords);
+        if(routeTableChanged)
+            forwardingTable.addRoutesToForwarding(routeTable.getBestRoutes());
     }
 
     private int getCurrentSequenceNumber(){

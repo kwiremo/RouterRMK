@@ -31,9 +31,10 @@ public class RoutingTable extends TimedTable {
      */
 
 
-    public void addNewRoute(TableRecord newEntry) {
+    public boolean addNewRoute(TableRecord newEntry) {
 
         RoutingRecord newRoutingRecord = (RoutingRecord) newEntry;
+
         if (newRoutingRecord != null) {
             for (int i = 0; i < table.size(); i++) {
                 if (table.get(i).getKey().compareTo(newRoutingRecord.getKey()) == 0) {
@@ -45,21 +46,26 @@ public class RoutingTable extends TimedTable {
                         if (temp.getDistance() == newRoutingRecord.getDistance()) {
                             //If it is present, check if it has different routes
                             table.get(i).updateTime();
+                            return false;
                         }
                         else {
                             removeItem(temp.getKey());
-                            addItem(newRoutingRecord);
+                            table.add(newRoutingRecord);
+                            //addItem(newRoutingRecord);
                             updateObservers();
-                            return;
+                            return true;
                         }
                     }
                 }
             }
 
             //If not found in the table, add this new entry.
-            addItem(newRoutingRecord);
+            //addItem(newRoutingRecord);
+            table.add(newRoutingRecord);
             updateObservers();
+            return true;
         }
+        return false;
     }
 
     /**
@@ -191,20 +197,25 @@ public class RoutingTable extends TimedTable {
                 RoutingRecord forwRecord = (RoutingRecord) table.get(j);
                 if(forwRecord.getNetworkNumber() == bestNewRecord.getNetworkNumber()){
                     removeItem(forwRecord.getKey());
-                    addNewRoute(bestNewRecord);
+                    //TODO: Ensure that this right later.
+                    table.add(bestNewRecord);
+                    updateObservers();
                     break;
                 }
             }
-
             //If the new record does not exist, add it.
-            addNewRoute(bestNewRecord);
+            //TODO: Ensure that this correct.
+            addItem(bestNewRecord);
         }
     }
 
     // This adds all routes specified to the table, following known rules for route updating.
-    public void	addRoutes(List<RoutingRecord> routes){
+    public boolean	addRoutes(List<RoutingRecord> routes){
+        boolean routeTableChange = false;
         for(int i = 0; i<routes.size(); i++){
-            addNewRoute(routes.get(i));
+            if(addNewRoute(routes.get(i)))
+                routeTableChange = true;
         }
+        return routeTableChange;
     }
 }
