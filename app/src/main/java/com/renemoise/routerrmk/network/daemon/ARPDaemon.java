@@ -61,20 +61,21 @@ public class ARPDaemon extends Observable implements Observer,Runnable{
     {
         //For testing purposes.
 
-        addARPEntry(new LL2PAddressField("112233", false).getAddress(),
-                new LL3PAddressField("26189", false).getAddress());
+        //addARPEntry(new LL2PAddressField("112233", false).getAddress(),
+                //new LL3PAddressField("0f0f", false).getAddress());
 
 
-        addARPEntry(new LL2PAddressField("112255", false).getAddress(),
-                new LL3PAddressField("26139", false).getAddress());
+        //addARPEntry(new LL2PAddressField("112255", false).getAddress(),
+                //new LL3PAddressField("26139", false).getAddress());
 
-        addARPEntry(new LL2PAddressField("112266", false).getAddress(),
-                new LL3PAddressField("26129", false).getAddress());
+        //addARPEntry(new LL2PAddressField("112266", false).getAddress(),
+                //new LL3PAddressField("26129", false).getAddress());
     }
 
     @Override
     public void run() {
         ArrayList<TableRecord> trashedRecords = arpTable.expireRecords(Constants.MAX_AGE_ALLOWED_ARP_RECORD);
+        setChanged();
         notifyObservers(trashedRecords);    //TODO: I passed deleted records here.
     }
 
@@ -151,6 +152,22 @@ public class ARPDaemon extends Observable implements Observer,Runnable{
             }
         }
         throw new LabException("MAC address for LL3P Address: " + ll3PAddress + " could not be found");
+    }
+
+
+    /**
+     *
+     * @param ll2pAddress
+     * @return
+     */
+    public int	getKey(int ll2pAddress){
+        for (TableRecord record : arpTable.getTableArrayList()) {
+            if (record instanceof ARPRecord) {
+                if (((ARPRecord) record).getLl2PAddress() == ll2pAddress)
+                    return ((ARPRecord) record).getKey();
+            }
+        }
+        return -1;
     }
 
     /**

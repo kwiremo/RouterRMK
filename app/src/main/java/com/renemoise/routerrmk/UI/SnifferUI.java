@@ -205,7 +205,9 @@ public class SnifferUI implements Observer {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.packetNumber.setText(Integer.toString(position));
+
             viewHolder.packetSummaryString.setText(frameList.get(position).toSummaryString());
+
             return convertView;
         }
 

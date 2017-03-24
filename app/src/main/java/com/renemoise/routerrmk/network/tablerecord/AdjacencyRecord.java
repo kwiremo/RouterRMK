@@ -57,8 +57,8 @@ public class AdjacencyRecord extends TableRecord {
 
     @Override
     public String toString() {
-        return String.format("LL2P Address: " + Integer.toHexString(ll2pAddress)
-                + "IP Address: " + ipAddress);
+        return String.format("LL2P Add: " + Integer.toHexString(ll2pAddress)
+                + "IP Add: " + ipAddress);
     }
 
     public int getLl2pAddress() {

@@ -68,8 +68,8 @@ public class LL2Daemon implements Observer {
                     uiManager.disPlayMessage("The type is reserved! No further processing will occur");
                     break;
                 case Constants.LL2P_TYPE_IS_LRP:
-                    LRPDaemon.getInstance().processLRPPacket((LRPDatagram)
-                            (receivedFrame.getPayload().getPacket()));
+                    LRPDaemon.getInstance().receiveNewLRP(receivedFrame.getPayload().toHexString().getBytes(),
+                            receivedFrame.getSourceAddress().getAddress());
                     break;
                 case Constants.LL2P_TYPE_IS_ARP_REQUEST:
                     arpDaemon.processARPRequest(receivedFrame.getSourceAddress().getAddress(),
@@ -110,10 +110,6 @@ public class LL2Daemon implements Observer {
 
         //Send frame.
         ll1Daemon.sendFrame(frame);
-
-        //Say you just attempted to send a frame.
-        UIManager.getInstance().disPlayMessage("Just sent a clicked frame!");
-
     }
 
     // This method is passed an LL2PFrame object. Using this object it builds an echo reply frame
@@ -156,6 +152,7 @@ public class LL2Daemon implements Observer {
                         Constants.LL2P_ROUTER_ADDRESS_VALUE, true), new LL2PTypeField(
                         Constants.LL2P_TYPE_IS_LRP), new DatagramPayloadField(
                         datagram), new CRC("1995"));
+                break;
             default:
                 frame = null;
         }

@@ -3,6 +3,7 @@ package com.renemoise.routerrmk.network.tablerecord;
 import android.content.IntentFilter;
 
 import com.renemoise.routerrmk.network.datagram_fields.NetworkDistancePair;
+import com.renemoise.routerrmk.support.Utilities;
 
 /**
  * Created by Rene Moise on 2/1/2017.
@@ -61,7 +62,12 @@ public class RoutingRecord extends TableRecord {
 
     @Override
     public String toString() {
-        //TODO: Make it cleaner.
-        return networkDistancePair.toString() + " " + nextHop;
+        return "RR. " + networkDistancePair.explainSelf() +
+                " Next hop: " + Integer.toHexString(nextHop) + " age: " + getAgeInSeconds();
     }
+
+//    @Override
+//    public String toString() {
+//        return "RR. " + "key: " + Integer.toHexString(getKey()) + " age: " + getAgeInSeconds();
+//    }
 }

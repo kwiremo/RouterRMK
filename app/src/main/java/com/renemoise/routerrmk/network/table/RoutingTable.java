@@ -5,6 +5,7 @@ import com.renemoise.routerrmk.network.tablerecord.TableRecord;
 import com.renemoise.routerrmk.support.LabException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,15 +20,16 @@ import java.util.Map;
  * table operations such as adding, removing, replacing, and expiring records.
  */
 public class RoutingTable extends TimedTable {
+
     public RoutingTable() {
         super();
     }
-
     /**
      *     Given a routing record search the routing table for a route from the source of this
      *     information. If this is different then remove and replace the old record. If this is
      *     the same then touch the old one to keep it from expiring. If this is new then add it.
      */
+
 
     public void addNewRoute(TableRecord newEntry) {
 
@@ -40,21 +42,22 @@ public class RoutingTable extends TimedTable {
 
                     if (temp != null) {
 
-                        if (temp.getDistance() == ((RoutingRecord) newRoutingRecord).getDistance()) {
+                        if (temp.getDistance() == newRoutingRecord.getDistance()) {
                             //If it is present, check if it has different routes
                             table.get(i).updateTime();
                         }
                         else {
-                            table.remove(i);
-                            table.add(newRoutingRecord);
+                            removeItem(temp.getKey());
+                            addItem(newRoutingRecord);
                             updateObservers();
                             return;
                         }
                     }
                 }
             }
+
             //If not found in the table, add this new entry.
-            table.add(newRoutingRecord);
+            addItem(newRoutingRecord);
             updateObservers();
         }
     }
@@ -64,11 +67,14 @@ public class RoutingTable extends TimedTable {
      * @param entry
      */
     public void removeItem(TableRecord entry){
-        for (int i = 0; i < table.size(); i++) {
-            if(table.get(i).getKey().compareTo(entry.getKey()) == 0){
-                table.remove(i);
+        for(Iterator<TableRecord> iterator = getTableArrayList().iterator(); iterator.hasNext();){
+            TableRecord record = iterator.next();
+            if(record.getKey() >= entry.getKey()){
+                iterator.remove();
             }
         }
+
+        updateObservers();
     }
 
     /**
@@ -115,7 +121,7 @@ public class RoutingTable extends TimedTable {
             RoutingRecord temp = (RoutingRecord) table.get(i);
 
             if(temp.getNextHop() == ll3PAddress){
-                table.remove(i);
+                removeItem(temp);
             }
         }
     }
@@ -184,14 +190,14 @@ public class RoutingTable extends TimedTable {
             for(int j = 0; j<table.size(); j++){
                 RoutingRecord forwRecord = (RoutingRecord) table.get(j);
                 if(forwRecord.getNetworkNumber() == bestNewRecord.getNetworkNumber()){
-                    table.remove(forwRecord);
+                    removeItem(forwRecord.getKey());
                     addNewRoute(bestNewRecord);
                     break;
                 }
             }
 
             //If the new record does not exist, add it.
-            table.add(bestNewRecord);
+            addNewRoute(bestNewRecord);
         }
     }
 

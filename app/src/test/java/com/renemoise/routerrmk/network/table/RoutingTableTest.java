@@ -27,7 +27,7 @@ public class RoutingTableTest {
         RoutingTable routingTable = new RoutingTable();
         RoutingTable forwardingTable = new RoutingTable();
 
-        RoutingRecord record1 = new RoutingRecord(3,0,3333);
+        RoutingRecord record1 = new RoutingRecord(3,0,0x3333);
         routingTable.addNewRoute(record1);
 
         System.err.println("Record added:" + routingTable.table.get(0).toString());
@@ -35,13 +35,13 @@ public class RoutingTableTest {
         routingTable.expireRecords(1);
         System.err.println("Size after deletion:" + routingTable.table.size());
 
-        RoutingRecord record2 = new RoutingRecord(1,3,2222);
-        RoutingRecord record3 = new RoutingRecord(2,4,1111);
-        RoutingRecord record4 = new RoutingRecord(1,2,2222);
-        RoutingRecord record5 = new RoutingRecord(2,5,1111);
-        RoutingRecord record6 = new RoutingRecord(4,1,4444);
-        RoutingRecord record7 = new RoutingRecord(5,3,2222);
-        RoutingRecord record8 = new RoutingRecord(6,4,5555);
+        RoutingRecord record2 = new RoutingRecord(1,3,0x2222);
+        RoutingRecord record3 = new RoutingRecord(2,4,0x1111);
+        RoutingRecord record4 = new RoutingRecord(1,2,0x2222);
+        RoutingRecord record5 = new RoutingRecord(2,5,0x1111);
+        RoutingRecord record6 = new RoutingRecord(4,1,0x4444);
+        RoutingRecord record7 = new RoutingRecord(5,3,0x2222);
+        RoutingRecord record8 = new RoutingRecord(6,4,0x5555);
 
         List<RoutingRecord> routes = new ArrayList<>();
 
@@ -59,7 +59,7 @@ public class RoutingTableTest {
 
         List<RoutingRecord> bestRoutes = new ArrayList<>();
 
-        RoutingRecord existingForwardingRecord = new RoutingRecord(1,10,222);
+        RoutingRecord existingForwardingRecord = new RoutingRecord(1,10,0x222);
 
         forwardingTable.table.add(existingForwardingRecord);
 
@@ -120,13 +120,13 @@ public class RoutingTableTest {
 
 
 
-        RoutingRecord record10a = new RoutingRecord(10,3,2222);
-        RoutingRecord record10c = new RoutingRecord(10,2,2222);
-        RoutingRecord record10b = new RoutingRecord(10,4,1111);
-        RoutingRecord record12a = new RoutingRecord(12,3,2222);
-        RoutingRecord record12b = new RoutingRecord(12,4,5555);
-        RoutingRecord record11a = new RoutingRecord(11,2,1111);
-        RoutingRecord record11b = new RoutingRecord(11,1,4444);
+        RoutingRecord record10a = new RoutingRecord(10,3,0x2222);
+        RoutingRecord record10c = new RoutingRecord(10,2,0x2222);
+        RoutingRecord record10b = new RoutingRecord(10,4,0x1111);
+        RoutingRecord record12a = new RoutingRecord(12,3,0x2222);
+        RoutingRecord record12b = new RoutingRecord(12,4,0x5555);
+        RoutingRecord record11a = new RoutingRecord(11,2,0x1111);
+        RoutingRecord record11b = new RoutingRecord(11,1,0x4444);
 
         routes = new ArrayList<>();
 

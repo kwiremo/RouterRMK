@@ -1,5 +1,6 @@
 package com.renemoise.routerrmk.network.datagrams;
 
+import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagram_fields.LL3PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LRPRouteCount;
@@ -44,24 +45,38 @@ public class LRPDatagram implements Datagram {
         routes = new ArrayList<>();
         String lrppacket = new String(lrpPacket);
 
-        sourceLL3P = (LL3PAddressField) factory.getDatagramHeaderField(
-                Constants.LL3P_SOURCE_ADDRESS,lrppacket.substring(
-                        Constants.SOURCE_LL3P_OFFSET,Constants.SOURCE_LL3P_LENGTH));
+        try {
+            sourceLL3P = (LL3PAddressField) factory.getDatagramHeaderField(
+                    Constants.LL3P_SOURCE_ADDRESS, lrppacket.substring(
+                            Constants.SOURCE_LL3P_OFFSET, Constants.SOURCE_LL3P_LENGTH));
 
-        sequenceNumber = (LRPSequenceNumber) factory.getDatagramHeaderField(
-                Constants.SEQUENCE_NUMBER,lrppacket.substring(Constants.SEQUENCE_NUMBER_OFFSET,
-                        Constants.SEQUENCE_NUMBER_OFFSET + Constants.SEQUENCE_NUMBER_LENGTH));
+            sequenceNumber = (LRPSequenceNumber) factory.getDatagramHeaderField(
+                    Constants.SEQUENCE_NUMBER, lrppacket.substring(Constants.SEQUENCE_NUMBER_OFFSET,
+                            Constants.SEQUENCE_NUMBER_OFFSET + Constants.SEQUENCE_NUMBER_LENGTH));
 
-        count = (LRPRouteCount) factory.getDatagramHeaderField(
-                Constants.COUNT, lrppacket.substring(
-                        Constants.COUNT_OFFSET,Constants.COUNT_OFFSET + Constants.COUNT_LENGTH));
+            count = (LRPRouteCount) factory.getDatagramHeaderField(
+                    Constants.COUNT, lrppacket.substring(
+                            Constants.COUNT_OFFSET, Constants.COUNT_OFFSET + Constants.COUNT_LENGTH));
 
-        String routesString = lrppacket.substring(Constants.PAIR_OFFSET,lrpPacket.length);
+            String routesString = lrppacket.substring(Constants.PAIR_OFFSET, lrpPacket.length);
 
-        for(int i = 0; i<routesString.length(); i = i+4) {
-            NetworkDistancePair temp = (NetworkDistancePair) factory.getDatagramHeaderField(
-                    Constants.NETWORK_DISTANCE, routesString.substring(i, i + Constants.PAIR_LENGTH));
-            routes.add(temp);
+            for (int i = 0; i < routesString.length(); i = i + 4) {
+                NetworkDistancePair temp = (NetworkDistancePair) factory.getDatagramHeaderField(
+                        Constants.NETWORK_DISTANCE, routesString.substring(i, i + Constants.PAIR_LENGTH));
+                routes.add(temp);
+            }
+        }
+        catch (IndexOutOfBoundsException e){
+//            sourceLL3P = null;
+//            count = null;
+//            sequenceNumber = null;
+            UIManager.getInstance().disPlayMessage("Sorry! I could not process your LRP frame. \n " +
+                    "It is not well formatted!");
+            return;
+        }
+        catch (Exception e){
+            UIManager.getInstance().disPlayMessage("An eror occurred when parsing the LRP frame.");
+            return;
         }
     }
 
@@ -77,6 +92,9 @@ public class LRPDatagram implements Datagram {
 
     @Override
     public String toHexString() {
+        if(sourceLL3P == null || sequenceNumber ==null || count ==null)
+            return "";
+
         StringBuilder netDistHex = new StringBuilder();
         for(NetworkDistancePair pair : routes){
             netDistHex.append(pair.toHexString());
@@ -87,6 +105,9 @@ public class LRPDatagram implements Datagram {
 
     @Override
     public String toProtocolExplanationString() {
+        if(sourceLL3P == null || sequenceNumber ==null || count ==null)
+            return "Bad LRP Packet";
+
         StringBuilder netDistExpla = new StringBuilder();
         for(NetworkDistancePair pair : routes){
             netDistExpla.append(pair.explainSelf() + '\n');

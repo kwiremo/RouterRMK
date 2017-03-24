@@ -94,8 +94,12 @@ public class LL3PAddressField implements DatagramHeaderField {
         return address;
     }
 
+    //public String toString() {
+        //return "" + getNetworkNumber() + "." + getHostNumber();
+    //}
+
     @Override
     public String toString() {
-        return "" + getNetworkNumber() + "." + getHostNumber();
+        return toHexString();
     }
 }

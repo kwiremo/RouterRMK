@@ -17,6 +17,8 @@ public class DatagramPayloadField implements DatagramHeaderField {
     Datagram packet;
 
     public DatagramPayloadField(Datagram packet) {
+        if(packet == null)
+            return;
         this.packet = packet;
     }
 
@@ -42,7 +44,9 @@ public class DatagramPayloadField implements DatagramHeaderField {
 
     @Override
     public String explainSelf() {
-        return String.format(packet.toProtocolExplanationString());
+        if(packet == null || packet.equals(null))
+            return null;
+        return packet.toProtocolExplanationString();
     }
 
     @Override

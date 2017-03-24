@@ -54,7 +54,7 @@ public class NetworkDistancePair implements DatagramHeaderField {
 
     @Override
     public String explainSelf() {
-        return "Network/Distance: " + Utilities.padHexString(Integer.toHexString(network),1) + "/" +
+        return "Net/Dist: " + Utilities.padHexString(Integer.toHexString(network),1) + "/" +
                 Utilities.padHexString(Integer.toHexString(distance),1);
     }
 

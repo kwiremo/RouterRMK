@@ -11,7 +11,7 @@ public class LRPDatagramTest {
         String test = "0310fd030502040103";
         LRPDatagram packet = new LRPDatagram(test.getBytes());
         System.err.println(packet.toProtocolExplanationString());
-        System.err.println(packet.getBytes());
+        //System.err.println(packet.getBytes());
         System.err.println(packet.toString());
         System.err.println(packet.toHexString());
     }

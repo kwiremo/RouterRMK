@@ -9,6 +9,7 @@ import com.renemoise.routerrmk.network.datagram_fields.LRPSequenceNumber;
 import com.renemoise.routerrmk.network.datagram_fields.NetworkDistancePair;
 import com.renemoise.routerrmk.network.datagrams.LRPDatagram;
 import com.renemoise.routerrmk.network.table.RoutingTable;
+import com.renemoise.routerrmk.network.table.Table;
 import com.renemoise.routerrmk.network.tablerecord.ARPRecord;
 import com.renemoise.routerrmk.network.tablerecord.RoutingRecord;
 import com.renemoise.routerrmk.network.tablerecord.TableRecord;
@@ -95,6 +96,7 @@ public class LRPDaemon implements Runnable, Observer{
 	    //Add a route to the routing table for each adjacent router’s network, at a distance of one.
         // This information is gained from the ARP table and your router is considered the source
         // for this information. The neighbor is, of course, the next hop.
+
         for (TableRecord record:arpDaemon.getARPRecordList()) {
             LL3PAddressField adjacentHop = new LL3PAddressField(
                     Integer.toHexString(((ARPRecord)record).getLl3pAddress()), true);
@@ -114,15 +116,15 @@ public class LRPDaemon implements Runnable, Observer{
         //Using the list of adjacent nodes from step 4 above send a routing update to every
         // known neighbor. You will exclude routes learned from that router in this update in order
         // to avoid the count-to-infinity problem that exists with Distance-Vector routing protocols.
-        //todo: implement this.
 
         for (TableRecord record:arpDaemon.getARPRecordList()) {
+            int recordLL3Paddress = ((ARPRecord)record).getLl3pAddress();
             LL3PAddressField myAddress = new LL3PAddressField(
                     Constants.LL3P_ROUTER_ADDRESS_VALUE, true);
             LRPSequenceNumber lrpSequenceNumber = new LRPSequenceNumber(getCurrentSequenceNumber());
 
             //Exclude all the routes learned from  this node.
-            List<RoutingRecord> listToSend = forwardingTable.getRouteListExcluding(record.getKey());
+            List<RoutingRecord> listToSend = forwardingTable.getRouteListExcluding(recordLL3Paddress);
             LRPRouteCount lrpCount = new LRPRouteCount(Integer.toHexString(listToSend.size()));
 
             ArrayList<NetworkDistancePair> netDistPairs = new ArrayList<>();
@@ -134,7 +136,7 @@ public class LRPDaemon implements Runnable, Observer{
             //Create an LRP datagram to send
             LRPDatagram lrpDatagram = new LRPDatagram(myAddress, lrpSequenceNumber, lrpCount,
                     netDistPairs);
-            layer2Daemon.sendLL2PFrame(lrpDatagram, record.getKey(), Constants.LL2P_TYPE_IS_LRP);
+            sendUpdate(lrpDatagram,(recordLL3Paddress));
         }
 
     }
@@ -147,20 +149,29 @@ public class LRPDaemon implements Runnable, Observer{
 
         }
         else if(observable.getClass().equals(ARPDaemon.class)) {
-            List<TableRecord> deletedRecords = (ArrayList<TableRecord>) o;
 
-            for (int i = 0; i < deletedRecords.size(); i++){
-                forwardingTable.removeRoutesFrom(deletedRecords.get(i).getKey());
-                routeTable.removeRoutesFrom(deletedRecords.get(i).getKey());
+            if(!o.equals(null)) {
+                List<TableRecord> deletedRecords = (ArrayList<TableRecord>) o;
+
+                for (int i = 0; i < deletedRecords.size(); i++) {
+                    forwardingTable.removeRoutesFrom(((ARPRecord)deletedRecords.get(i)).getLl3pAddress());
+                    routeTable.removeRoutesFrom(((ARPRecord)deletedRecords.get(i)).getLl3pAddress());
+                }
             }
         }
     }
 
     //Getter for routing table
-    public RoutingTable getRoutingTable() {
+    public RoutingTable getRouteTable() {
         return routeTable;
     }
 
+    /**
+     *     This returns the routing table. It is primarily used by the Table UI.
+     */
+    public Table getRoutingTable() {
+        return routeTable;
+    }
     /**
      *     This will provide a method to return an ArrayList containing the routes in the
      *     routing table.
@@ -169,8 +180,16 @@ public class LRPDaemon implements Runnable, Observer{
         return routeTable.getTableArrayList();
     }
 
-    //Getter for forwarding table.
-    public RoutingTable getForwardingTable(){
+    /**
+     * This returns the forwarding table. It is primarily used by the TableUI
+     * @return
+     */
+    public Table getForwardingTable(){
+        return forwardingTable;
+    }
+
+
+    public RoutingTable getFIB(){
         return forwardingTable;
     }
 
@@ -192,11 +211,10 @@ public class LRPDaemon implements Runnable, Observer{
      * @param lrpPackt
      * @param ll2PSource
      */
+    //TODO: IS this a bad practice?
     public void receiveNewLRP(byte[] lrpPackt, int ll2PSource){
-        arpDaemon.getArpTable().touch(ll2PSource);
-        LRPDatagram lrpDatagram = new LRPDatagram(lrpPackt);
-        //TODO: IMplement later.
-        //routeTable.addRoutes(lrpDatagram.getRo);
+        arpDaemon.getArpTable().touch(arpDaemon.getKey(ll2PSource));
+        processLRP(lrpPackt);
     }
 
     /**
@@ -246,7 +264,7 @@ public class LRPDaemon implements Runnable, Observer{
             newRecords.add(temp);
         }
         routeTable.addRoutes(newRecords);
-        forwardingTable.addRoutes(routeTable.getBestRoutes());
+        forwardingTable.addRoutesToForwarding(routeTable.getBestRoutes());
     }
 
     private int getCurrentSequenceNumber(){

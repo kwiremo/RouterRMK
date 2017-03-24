@@ -2,12 +2,16 @@ package com.renemoise.routerrmk.network.datagrams;
 
 import android.util.Log;
 
+import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagram_fields.CRC;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
+import com.renemoise.routerrmk.network.datagram_fields.LL3PAddressField;
 import com.renemoise.routerrmk.support.Factory;
+
+import java.io.Console;
 
 /**
  * Created by Rene Moise on 1/22/2017.
@@ -39,69 +43,78 @@ public class LL2PFrame implements Datagram {
      convert them to the fields, which are retrieved from the factory.
      */
     public LL2PFrame(byte[] LL2FrameSpecs){
-        StringBuilder tempHolder = new StringBuilder();
+        try {
+            StringBuilder tempHolder = new StringBuilder();
 
-        String frameString = new String(LL2FrameSpecs);
-        Log.e("FRAME", frameString);
-        //Extract Destination Field
-        this.destinationAddress = (LL2PAddressField) Factory.getInstance().getDatagramHeaderField
-                (Constants.LL2P_DESTINATION_ADDRESS, frameString.substring
-                        (Constants.LL2P_DEST_ADDRESS_OFFSET*2,
-                                Constants.LL2P_DEST_ADDRESS_OFFSET*2 + Constants.LL2P_DEST_ADD_FIELD_LENGTH*2));
+            String frameString = new String(LL2FrameSpecs);
+            Log.e("FRAME", frameString);
+            //Extract Destination Field
+            this.destinationAddress = (LL2PAddressField) Factory.getInstance().getDatagramHeaderField
+                    (Constants.LL2P_DESTINATION_ADDRESS, frameString.substring
+                            (Constants.LL2P_DEST_ADDRESS_OFFSET * 2,
+                                    Constants.LL2P_DEST_ADDRESS_OFFSET * 2 + Constants.LL2P_DEST_ADD_FIELD_LENGTH * 2));
 
-        Log.d("DEST", frameString.substring(0,6));
-        Log.d("SOURCE", frameString.substring(6,12));
-        //Extract Source Field
-        this.sourceAddress = (LL2PAddressField) Factory.getInstance().getDatagramHeaderField
-                (Constants.LL2P_SOURCE_ADDRESS, frameString.substring
-                        (Constants.LL2P_SOURCE_ADDRESS_OFFSET*2,
-                                Constants.LL2P_SOURCE_ADDRESS_OFFSET*2+Constants.LL2P_SOURCE_ADDRESS_FIELD_LENGTH*2));
+            Log.d("DEST", frameString.substring(0, 6));
+            Log.d("SOURCE", frameString.substring(6, 12));
+            //Extract Source Field
+            this.sourceAddress = (LL2PAddressField) Factory.getInstance().getDatagramHeaderField
+                    (Constants.LL2P_SOURCE_ADDRESS, frameString.substring
+                            (Constants.LL2P_SOURCE_ADDRESS_OFFSET * 2,
+                                    Constants.LL2P_SOURCE_ADDRESS_OFFSET * 2 + Constants.LL2P_SOURCE_ADDRESS_FIELD_LENGTH * 2));
 
-        //Extract Type Field
-        this.type = (LL2PTypeField) Factory.getInstance().getDatagramHeaderField
-                (Constants.LL2P_TYPE_FELD, frameString.substring(Constants.LL2P_TYPE_FIELD_OFFSET*2,
-                        Constants.LL2P_TYPE_FIELD_OFFSET*2 + Constants.LL2P_TYPE_FIELD_LENGTH*2));
+            //Extract Type Field
+            this.type = (LL2PTypeField) Factory.getInstance().getDatagramHeaderField
+                    (Constants.LL2P_TYPE_FELD, frameString.substring(Constants.LL2P_TYPE_FIELD_OFFSET * 2,
+                            Constants.LL2P_TYPE_FIELD_OFFSET * 2 + Constants.LL2P_TYPE_FIELD_LENGTH * 2));
 
 
-        //Extract Payload Field
-        int paylodLength = LL2FrameSpecs.length - Constants.LL2P_PAYLOAD_OFFSET*2
-                - Constants.LL2P_CRC_FIELD_LENGTH*2;
+            //Extract Payload Field
+            int paylodLength = LL2FrameSpecs.length - Constants.LL2P_PAYLOAD_OFFSET * 2
+                    - Constants.LL2P_CRC_FIELD_LENGTH * 2;
 
-        //Make a payloadField passing datagrams.
-        makePayloadField(frameString, paylodLength);
+            //Make a payloadField passing datagrams.
+            makePayloadField(frameString, paylodLength);
 
-        //Get CRC Value.
-        int CRC_Offset = Constants.LL2P_PAYLOAD_OFFSET*2 + paylodLength;
+            //Get CRC Value.
+            int CRC_Offset = Constants.LL2P_PAYLOAD_OFFSET * 2 + paylodLength;
 
-        this.crc = (CRC) Factory.getInstance().getDatagramHeaderField
-                (Constants.LL2P_CRC_FIELD, frameString.substring(CRC_Offset,
-                        CRC_Offset + Constants.LL2P_CRC_FIELD_LENGTH*2));
+            this.crc = (CRC) Factory.getInstance().getDatagramHeaderField
+                    (Constants.LL2P_CRC_FIELD, frameString.substring(CRC_Offset,
+                            CRC_Offset + Constants.LL2P_CRC_FIELD_LENGTH * 2));
+        }
+        catch (Exception e){
+            UIManager.getInstance().disPlayMessage("Could not process the received packet.");
+        }
     }
 
     //Makes payload field based on the datagrams made for each type.
     private void makePayloadField(String frameString, int paylodLength)
     {
-        String payloadText = frameString.substring(Constants.LL2P_PAYLOAD_OFFSET*2,
+        String payloadString = frameString.substring(Constants.LL2P_PAYLOAD_OFFSET*2,
                 Constants.LL2P_PAYLOAD_OFFSET*2 + paylodLength);
 
         int type = getType().getType();
 
         if(type == Constants.LL2P_TYPE_IS_TEXT) {
             TextDatagram datagramPacket = (TextDatagram) Factory.getInstance().getDatagram
-                    (Constants.TEXT_DATAGRAM, payloadText);
+                    (Constants.TEXT_DATAGRAM, payloadString);
             this.payload = new DatagramPayloadField(datagramPacket);
         }
 
          else if ((type == Constants.LL2P_TYPE_IS_ARP_REPLY) || (type == Constants.LL2P_TYPE_IS_ARP_REQUEST)){
-            ARPDatagram datagram = (ARPDatagram) factory.getDatagram(Constants.ARP_DATAGRAM, payloadText);
+            ARPDatagram datagram = (ARPDatagram) factory.getDatagram(Constants.ARP_DATAGRAM, payloadString);
             this.payload = new DatagramPayloadField(datagram);
+        }
+        else if(type == Constants.LL2P_TYPE_IS_LRP){
+            this.payload = new DatagramPayloadField(new LRPDatagram(payloadString.getBytes()));
         }
         else
         {
             TextDatagram datagramPacket = (TextDatagram) Factory.getInstance().getDatagram
-                    (Constants.TEXT_DATAGRAM, payloadText);
+                    (Constants.TEXT_DATAGRAM, payloadString);
             this.payload = new DatagramPayloadField(datagramPacket);
         }
+
     }
 
     @Override
@@ -128,6 +141,8 @@ public class LL2PFrame implements Datagram {
 
     @Override
     public String toSummaryString() {
+        if(payload == null)
+            return null;
         return String.format(payload.explainSelf());
     }
 

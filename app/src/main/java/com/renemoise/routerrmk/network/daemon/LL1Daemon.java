@@ -127,17 +127,28 @@ public class LL1Daemon extends Observable implements Observer{
 
         @Override
         protected void onPostExecute(byte[] frameReceived) {
-            LL2PFrame receivedFrame = new LL2PFrame(frameReceived);
-            setChanged();
-            notifyObservers(receivedFrame);
-            // pass this LL2P Frame to the LL2PDaemon when you create one...
-            LL2Daemon.getInstance().processLL2PFrame(receivedFrame);
+
+            try {
+                LL2PFrame receivedFrame = new LL2PFrame(frameReceived);
+
+                if (receivedFrame.equals(null))
+                    return;
+
+                setChanged();
+                notifyObservers(receivedFrame);
+                // pass this LL2P Frame to the LL2PDaemon when you create one...
+                LL2Daemon.getInstance().processLL2PFrame(receivedFrame);
+
+                Log.e("ReceivedStringFromHost", receivedFrame.toSummaryString());
+            }
+            catch (Exception e){
+                UIManager.getInstance().disPlayMessage("The packet can not be processed!");
+            }
 
             // spin off a new thread to listen for packets.
 
             new ReceiveUnicastFrame().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, receiveSocket);
 
-            Log.e("ReceivedStringFromHost", receivedFrame.toSummaryString());
         }
     }
 

@@ -51,4 +51,9 @@ public class ARPDatagram implements Datagram {
     public String toSummaryString() {
         return "ARP Payload";
     }
+
+    @Override
+    public String toString() {
+        return toHexString();
+    }
 }
