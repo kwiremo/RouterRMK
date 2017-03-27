@@ -106,9 +106,9 @@ public class LRPDaemon implements Runnable, Observer{
         for (TableRecord record:arpDaemon.getARPRecordList()) {
             LL3PAddressField adjacentHop = new LL3PAddressField(
                     Integer.toHexString(((ARPRecord)record).getLl3pAddress()), true);
+
             RoutingRecord temp = new RoutingRecord(adjacentHop.getNetworkNumber(),
-                    Constants.ADJACENT_HOP_DISTANCE, new LL3PAddressField(
-                    Constants.LL3P_ROUTER_ADDRESS_VALUE, true).getAddress());
+                    Constants.ADJACENT_HOP_DISTANCE,((ARPRecord) record).getLl3pAddress());
             routeTableChanged = routeTable.addNewRoute(temp);
             if(routeTableChanged)
                 changeMarked = true;
@@ -235,7 +235,7 @@ public class LRPDaemon implements Runnable, Observer{
      * @param lrp
      */
     public void processLRP(byte[] lrp){
-        processLRPPacket(new LRPDatagram(lrp));
+            processLRPPacket(new LRPDatagram(lrp));
     }
 
     /**

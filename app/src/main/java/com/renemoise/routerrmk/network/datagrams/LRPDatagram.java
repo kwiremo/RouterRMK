@@ -7,6 +7,7 @@ import com.renemoise.routerrmk.network.datagram_fields.LRPRouteCount;
 import com.renemoise.routerrmk.network.datagram_fields.LRPSequenceNumber;
 import com.renemoise.routerrmk.network.datagram_fields.NetworkDistancePair;
 import com.renemoise.routerrmk.support.Factory;
+import com.renemoise.routerrmk.support.LabException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,10 @@ public class LRPDatagram implements Datagram {
             sourceLL3P = (LL3PAddressField) factory.getDatagramHeaderField(
                     Constants.LL3P_SOURCE_ADDRESS, lrppacket.substring(
                             Constants.SOURCE_LL3P_OFFSET, Constants.SOURCE_LL3P_LENGTH));
+            if(sourceLL3P.getAddress() == -1){
+                throw new Exception();
+            }
+
 
             sequenceNumber = (LRPSequenceNumber) factory.getDatagramHeaderField(
                     Constants.SEQUENCE_NUMBER, lrppacket.substring(Constants.SEQUENCE_NUMBER_OFFSET,
@@ -59,6 +64,11 @@ public class LRPDatagram implements Datagram {
                             Constants.COUNT_OFFSET, Constants.COUNT_OFFSET + Constants.COUNT_LENGTH));
 
             String routesString = lrppacket.substring(Constants.PAIR_OFFSET, lrpPacket.length);
+
+            //Test to see if the routestring is what I expect by dividing it by 4, if not divisible
+            //by 4 the routeString is wrong formatted.
+            if(routesString.length() % 4 != 0)
+                throw new Exception("Wrong format");
 
             for (int i = 0; i < routesString.length(); i = i + 4) {
                 NetworkDistancePair temp = (NetworkDistancePair) factory.getDatagramHeaderField(
@@ -76,7 +86,7 @@ public class LRPDatagram implements Datagram {
         }
         catch (Exception e){
             UIManager.getInstance().disPlayMessage("An eror occurred when parsing the LRP frame.");
-            return;
+            //return;
         }
     }
 

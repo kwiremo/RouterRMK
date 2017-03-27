@@ -45,6 +45,7 @@ public class LL3PAddressField implements DatagramHeaderField {
         }
         catch (NumberFormatException e)
         {
+            this.address = -1;
             System.err.println("LL3PAddressField: address could not be parsed");
         }
 

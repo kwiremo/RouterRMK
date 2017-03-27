@@ -127,7 +127,7 @@ public class Constants implements Observer {
     public static final int MAX_AGE_ALLOWED_ARP_RECORD = 120;
 
     //LRP RECORDS\
-    public static final int MAX_AGE_ALLOWED_LRP_RECORD = 10;
+    public static final int MAX_AGE_ALLOWED_LRP_RECORD = 30;
 
     //DATAGRAM IDENTIFICATIONS
     public static final int TEXT_DATAGRAM  = 14;
@@ -139,7 +139,7 @@ public class Constants implements Observer {
     public static final int ROUTER_BOOT_TIME = 3;
     public static final int UI_UPDATE_INTERVAL = 1;
     public static final int ARP_DAEMON_UPDATE_INTERVAL = 5;
-    public static final int  LRP_DAEMON_UPDATE_INTERVAL = 5;
+    public static final int  LRP_DAEMON_UPDATE_INTERVAL = 10;
 
     //LRP Packet Field Length
     public static final int SOURCE_LL3P_OFFSET = 0;
