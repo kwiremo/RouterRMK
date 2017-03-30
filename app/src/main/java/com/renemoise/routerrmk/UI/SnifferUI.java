@@ -3,6 +3,7 @@ package com.renemoise.routerrmk.UI;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,9 @@ public class SnifferUI implements Observer {
 
         //Connect the Protocol breakout object to the TextView for the middle window.
         protocolBreakoutTextView = (TextView) parentActivity.findViewById(R.id.idLL2PInformationTextView);
+
+        //Add scrollable bars on the textview.
+        protocolBreakoutTextView.setMovementMethod(new ScrollingMovementMethod());
 
         //Connect the Hex detail object to the TextView for the lower window.
         frameBytesTextView = (TextView) parentActivity.findViewById(R.id.idHexContentsTextView);

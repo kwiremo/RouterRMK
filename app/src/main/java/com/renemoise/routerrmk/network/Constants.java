@@ -102,7 +102,7 @@ public class Constants implements Observer {
     public  static final int LL2P_PAYLOAD_OFFSET = 8;
     public  static final int LL2P_CRC_FIELD_LENGTH = 2;
 
-    //PROTOCOL INFORMATION
+    //LL2P PROTOCOL INFORMATION
     public static final int LL2P_TYPE_IS_LL3P = 0x8001;
     public static final int LL2P_TYPE_IS_RESERVED = 0x8002;
     public static final int LL2P_TYPE_IS_LRP = 0x8003;
@@ -112,6 +112,8 @@ public class Constants implements Observer {
     public static final int LL2P_TYPE_IS_ARP_REPLY = 0x8007;
     public static final int LL2P_TYPE_IS_TEXT = 0x8008;
 
+    //LL3P PROTOCOL INFORMATION
+    public static final int LL3P_TYPE_IS_TEXT = 0x8001;
 
     //TABLE RECORDS
     public static final int ARP_RECORD = 40;
@@ -159,4 +161,26 @@ public class Constants implements Observer {
 
 
     public static final int ADJACENT_HOP_DISTANCE = 1;
+
+
+    //LL3P FIELD LENGTH AND OFFSETS IN BYTES
+    public  static final int LL3P_DEST_ADDRESS_OFFSET = 2;
+    public  static final int LL3P_DEST_ADD_FIELD_LENGTH = 2;
+    public  static final int LL3P_SOURCE_ADDRESS_OFFSET = 0;
+    public  static final int LL3P_SOURCE_ADDRESS_FIELD_LENGTH = 2;
+    public  static final int LL3P_TYPE_FIELD_OFFSET = 4;
+    public  static final int LL3P_TYPE_FIELD_LENGTH = 2;
+    public  static final int LL3P_IDENTIFIER_FIELD_OFFSET = 6;
+    public  static final int LL3P_IDENTIFIER_FIELD_LENGTH = 2;
+    public  static final int LL3P_TTL_FIELD_OFFSET = 8;
+    public  static final int LL3P_TTL_FIELD_LENGTH = 1;
+    public  static final int LL3P_PAYLOAD_OFFSET = 9;
+    public  static final int LL3P_CHECKSUM_FIELD_LENGTH = 2;
+
+    //LL3P Field identifiers
+    public static final int LL3P_TYPE_FIELD = 103;
+    public static final int LL3P_IDENTIFIER_FIELD = 104;
+    public static final int LL3P_TTL_FIELD = 105;
+    public static final int LL3P_CHECKSUM_FIELD = 106;
+
 }

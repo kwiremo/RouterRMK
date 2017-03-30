@@ -108,12 +108,16 @@ public class LL2PFrame implements Datagram {
         else if(type == Constants.LL2P_TYPE_IS_LRP){
             this.payload = new DatagramPayloadField(new LRPDatagram(payloadString.getBytes()));
         }
+        else if(type == Constants.LL2P_TYPE_IS_LL3P){
+            this.payload = new DatagramPayloadField(new LL3Datagram(payloadString.getBytes()));
+        }
         else
         {
             TextDatagram datagramPacket = (TextDatagram) Factory.getInstance().getDatagram
                     (Constants.TEXT_DATAGRAM, payloadString);
             this.payload = new DatagramPayloadField(datagramPacket);
         }
+
 
     }
 

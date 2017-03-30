@@ -9,6 +9,10 @@ import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
 import com.renemoise.routerrmk.network.datagram_fields.LL3PAddressField;
+import com.renemoise.routerrmk.network.datagram_fields.LL3PChecksum;
+import com.renemoise.routerrmk.network.datagram_fields.LL3PIdentifierField;
+import com.renemoise.routerrmk.network.datagram_fields.LL3PTTLField;
+import com.renemoise.routerrmk.network.datagram_fields.LL3TypeField;
 import com.renemoise.routerrmk.network.datagram_fields.LRPRouteCount;
 import com.renemoise.routerrmk.network.datagram_fields.LRPSequenceNumber;
 import com.renemoise.routerrmk.network.datagram_fields.NetworkDistancePair;
@@ -67,6 +71,16 @@ public class Factory extends Observable{
                 return new LRPRouteCount(contents);
             case Constants.NETWORK_DISTANCE:
                 return new NetworkDistancePair(contents);
+
+            //LL3 Datagram Protocol
+            case Constants.LL3P_TYPE_FIELD:
+                return new LL3TypeField();
+            case Constants.LL3P_IDENTIFIER_FIELD:
+                return new LL3PIdentifierField(contents);
+            case Constants.LL3P_TTL_FIELD:
+                return new LL3PTTLField(contents);
+            case Constants.LL3P_CHECKSUM_FIELD:
+                return  new LL3PChecksum(contents);
 
             default:
                 return null;

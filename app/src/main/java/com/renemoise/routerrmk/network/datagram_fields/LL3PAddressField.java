@@ -52,6 +52,11 @@ public class LL3PAddressField implements DatagramHeaderField {
         this.isSourceAddress = isSourceAddress;
     }
 
+    public LL3PAddressField(int address,  Boolean isSourceAddress){
+        this.address = address;
+        this.isSourceAddress = isSourceAddress;
+    }
+
     @Override
     public String toHexString() {
         String addTemp = Integer.toHexString(address);
