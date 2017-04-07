@@ -115,7 +115,7 @@ public class LL3Datagram implements Datagram {
                             CRC_Offset + Constants.LL3P_CHECKSUM_FIELD_LENGTH * 2));
         }
         catch (Exception e){
-            UIManager.getInstance().disPlayMessage("Could not process the received packet.");
+            UIManager.getInstance().displayMessage("Could not process the received packet.");
         }
     }
 

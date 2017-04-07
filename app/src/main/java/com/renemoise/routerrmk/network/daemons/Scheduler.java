@@ -1,4 +1,4 @@
-package com.renemoise.routerrmk.network.daemon;
+package com.renemoise.routerrmk.network.daemons;
 
 import com.renemoise.routerrmk.UI.TableUI;
 import com.renemoise.routerrmk.UI.UIManager;

@@ -1,15 +1,14 @@
-package com.renemoise.routerrmk.network.daemon;
+package com.renemoise.routerrmk.network.daemons;
 
+import com.renemoise.routerrmk.UI.Messenger;
 import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
-import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
 import com.renemoise.routerrmk.network.datagram_fields.LL3PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL3PChecksum;
 import com.renemoise.routerrmk.network.datagram_fields.LL3PIdentifierField;
 import com.renemoise.routerrmk.network.datagram_fields.LL3PTTLField;
 import com.renemoise.routerrmk.network.datagram_fields.LL3TypeField;
-import com.renemoise.routerrmk.network.datagram_fields.LRPRouteCount;
 import com.renemoise.routerrmk.network.datagrams.LL3Datagram;
 import com.renemoise.routerrmk.network.datagrams.TextDatagram;
 import com.renemoise.routerrmk.support.BootLoader;
@@ -29,9 +28,9 @@ import java.util.Observer;
  * will notify the arp daemon that
  */
 
-public class LL3Daemon implements Observer{
+public class LL3PDaemon implements Observer{
     //A private field to our instance. The only one existing.
-    private static LL3Daemon ourInstance = new LL3Daemon();
+    private static LL3PDaemon ourInstance = new LL3PDaemon();
 
     //A reference to the arpDaemon
     private ARPDaemon arpDaemon;
@@ -51,7 +50,7 @@ public class LL3Daemon implements Observer{
     //assign it a value of 15;
     private int timeToLive;
 
-    private LL3Daemon() {
+    private LL3PDaemon() {
     }
 
     //Gets my router's LL3P address
@@ -63,7 +62,7 @@ public class LL3Daemon implements Observer{
      * This static method returns the only instantiated object.
      * @return
      */
-    public static LL3Daemon getInstance() {
+    public static LL3PDaemon getInstance() {
         return ourInstance;
     }
 
@@ -85,7 +84,7 @@ public class LL3Daemon implements Observer{
      * @param message
      * @param layer3Address
      */
-    void sendPayload(String message, Integer layer3Address) {
+    public void sendPayload(String message, Integer layer3Address) {
         LL3PAddressField sourceLl3PAddressField = new LL3PAddressField(getMyLL3PAddress(), true);
         LL3PAddressField destLl3PAddressField = new LL3PAddressField(layer3Address, true);
         LL3TypeField ll3TypeField = new LL3TypeField();
@@ -116,15 +115,14 @@ public class LL3Daemon implements Observer{
         }
     }
 
-    public void receiveNewLRP(byte[] ll3Packt, int ll2PSource){
-        processLL3Packet(new LL3Datagram(ll3Packt),ll2PSource);
-    }
-
     public void processLL3Packet(LL3Datagram packet, Integer layer2Address){
         arpDaemon.getArpTable().touch(arpDaemon.getKey(layer2Address));
-        int destAddress = packet.getDestLL3PAddressField().getAddress();
-        if(destAddress == Integer.valueOf(getMyLL3PAddress(),16)){
-            UIManager.getInstance().disPlayMessage("LL3P: " + packet.getPayloadFieldValue().toString());
+        int destAdd = packet.getDestLL3PAddressField().getAddress();
+
+        if(destAdd == Integer.valueOf(getMyLL3PAddress(),16)){
+            int sourceAddress = packet.getSourceLl3PAddressField().getAddress();
+            UIManager.getInstance().getMessenger().receiveMessage(sourceAddress, packet.getPayloadFieldValue().toString());
+            UIManager.getInstance().displayMessage("LL3P: " + packet.getPayloadFieldValue().toString());
         }
         else
         {
@@ -136,7 +134,7 @@ public class LL3Daemon implements Observer{
             }
             else
             {
-                UIManager.getInstance().disPlayMessage("Killed a packet" + packet.toSummaryString());
+                UIManager.getInstance().displayMessage("Killed a packet" + packet.toSummaryString());
             }
         }
     }

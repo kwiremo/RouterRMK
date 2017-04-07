@@ -1,4 +1,4 @@
-package com.renemoise.routerrmk.network.daemon;
+package com.renemoise.routerrmk.network.daemons;
 
 import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
@@ -6,15 +6,11 @@ import com.renemoise.routerrmk.network.datagram_fields.CRC;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
-import com.renemoise.routerrmk.network.datagram_fields.TextPayload;
 import com.renemoise.routerrmk.network.datagrams.ARPDatagram;
 import com.renemoise.routerrmk.network.datagrams.Datagram;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
 import com.renemoise.routerrmk.network.datagrams.LL3Datagram;
-import com.renemoise.routerrmk.network.datagrams.LRPDatagram;
 import com.renemoise.routerrmk.support.BootLoader;
-import com.renemoise.routerrmk.support.Factory;
-import com.renemoise.routerrmk.support.LabException;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -40,8 +36,8 @@ public class LL2Daemon implements Observer {
     // transmission services from that daemon.
     private LL1Daemon ll1Daemon;
 
-    //Instance to LL3Daemon
-    private LL3Daemon ll3Daemon;
+    //Instance to LL3PDaemon
+    private LL3PDaemon ll3PDaemon;
     private LL2Daemon() {
     }
 
@@ -50,25 +46,25 @@ public class LL2Daemon implements Observer {
 
         String dest = receivedFrame.getDestinationAddress().toHexString();
         if(!dest.equals(Constants.LL2P_ROUTER_ADDRESS_VALUE)){
-            uiManager.disPlayMessage("Discarded packet from " +
+            uiManager.displayMessage("Discarded packet from " +
                     receivedFrame.getSourceAddress().toHexString());
         }
         else
         {
             switch (receivedFrame.getType().getType()){
                 case Constants.LL2P_TYPE_IS_ECHO_REPLY:
-                    uiManager.disPlayMessage("Received Echo Request + "+
+                    uiManager.displayMessage("Received Echo Request + "+
                             receivedFrame.getSourceAddress().toString());
                     break;
                 case Constants.LL2P_TYPE_IS_ECHO_REQUEST:
                     answerEchoRequest(receivedFrame);
                     break;
                 case Constants.LL2P_TYPE_IS_LL3P:
-                    ll3Daemon.processLL3Packet(((LL3Datagram)receivedFrame.getPayload().getPacket()),
+                    ll3PDaemon.processLL3Packet(((LL3Datagram)receivedFrame.getPayload().getPacket()),
                             receivedFrame.getSourceAddress().getAddress());
                     break;
                 case Constants.LL2P_TYPE_IS_RESERVED:
-                    uiManager.disPlayMessage("The type is reserved! No further processing will occur");
+                    uiManager.displayMessage("The type is reserved! No further processing will occur");
                     break;
                 case Constants.LL2P_TYPE_IS_LRP:
                     LRPDaemon.getInstance().receiveNewLRP(receivedFrame.getPayload().toHexString().getBytes(),
@@ -77,21 +73,21 @@ public class LL2Daemon implements Observer {
                 case Constants.LL2P_TYPE_IS_ARP_REQUEST:
                     arpDaemon.processARPRequest(receivedFrame.getSourceAddress().getAddress(),
                             (ARPDatagram) receivedFrame.getPayload().getPacket());
-                    uiManager.disPlayMessage("received an ARP Request");
+                    uiManager.displayMessage("received an ARP Request");
                     break;
 
                 case Constants.LL2P_TYPE_IS_ARP_REPLY:
                     arpDaemon.processARPReply(receivedFrame.getSourceAddress().getAddress(),
                             (ARPDatagram) receivedFrame.getPayload().getPacket());
-                    uiManager.disPlayMessage("Received an ARP Reply");
+                    uiManager.displayMessage("Received an ARP Reply");
                     break;
 
                 case Constants.LL2P_TYPE_IS_TEXT:
-                    uiManager.disPlayMessage("Received Text packet + "+
+                    uiManager.displayMessage("Received Text packet + "+
                             receivedFrame.getSourceAddress().toString());
                     break;
                 default:
-                    uiManager.disPlayMessage("The packet was not recognized!");
+                    uiManager.displayMessage("The packet was not recognized!");
                     break;
             }
         }
@@ -175,7 +171,7 @@ public class LL2Daemon implements Observer {
             uiManager = UIManager.getInstance();
             ll1Daemon = LL1Daemon.getInstance();
             arpDaemon = ARPDaemon.getInstance();
-            ll3Daemon = LL3Daemon.getInstance();
+            ll3PDaemon = LL3PDaemon.getInstance();
         }
     }
 }

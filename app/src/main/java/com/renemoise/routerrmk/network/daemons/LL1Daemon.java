@@ -1,4 +1,4 @@
-package com.renemoise.routerrmk.network.daemon;
+package com.renemoise.routerrmk.network.daemons;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -6,7 +6,6 @@ import android.util.Log;
 import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
 import com.renemoise.routerrmk.network.datagrams.ARPDatagram;
-import com.renemoise.routerrmk.network.datagrams.Datagram;
 import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
 import com.renemoise.routerrmk.network.table.Table;
 import com.renemoise.routerrmk.network.tablerecord.AdjacencyRecord;
@@ -21,10 +20,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Rene Moise on 1/26/2017.
@@ -142,7 +139,7 @@ public class LL1Daemon extends Observable implements Observer{
                 Log.e("ReceivedStringFromHost", receivedFrame.toSummaryString());
             }
             catch (Exception e){
-                UIManager.getInstance().disPlayMessage("The packet can not be processed!");
+                UIManager.getInstance().displayMessage("The packet can not be processed!");
             }
 
             // spin off a new thread to listen for packets.
@@ -239,7 +236,7 @@ public class LL1Daemon extends Observable implements Observer{
         adjacencyTable.addItem(adjTable);
 
         //Send arp request right after we add an adjacency.
-        ll2Daemon.sendLL2PFrame(new ARPDatagram(LL3Daemon.getInstance().getMyLL3PAddress()),
+        ll2Daemon.sendLL2PFrame(new ARPDatagram(LL3PDaemon.getInstance().getMyLL3PAddress()),
                 ll2pAdd,Constants.LL2P_TYPE_IS_ARP_REQUEST);
         setChanged();
         notifyObservers(adjTable);

@@ -1,24 +1,13 @@
 package com.renemoise.routerrmk.UI;
 
 import android.app.Activity;
-import android.provider.Contacts;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.renemoise.routerrmk.network.Constants;
-import com.renemoise.routerrmk.network.daemon.LL1Daemon;
-import com.renemoise.routerrmk.network.daemon.LL2Daemon;
-import com.renemoise.routerrmk.network.datagram_fields.CRC;
-import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
-import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
-import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
-import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
+import com.renemoise.routerrmk.network.daemons.LL1Daemon;
+import com.renemoise.routerrmk.network.daemons.LL2Daemon;
 import com.renemoise.routerrmk.network.table.Table;
-import com.renemoise.routerrmk.network.table.TableInterface;
 import com.renemoise.routerrmk.network.tablerecord.AdjacencyRecord;
-import com.renemoise.routerrmk.support.LabException;
-import com.renemoise.routerrmk.support.Utilities;
 
 import java.util.Observer;
 
@@ -54,7 +43,7 @@ public class AdjacencyTableUI extends SingleTableUI implements Observer {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-            UIManager.getInstance().disPlayMessage(i+"");
+            UIManager.getInstance().displayMessage(i+"");
             //Retrieve the record that was clicked.
             AdjacencyRecord record = (AdjacencyRecord) tableList.get(i);
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/showIPAddress"
         android:orderInCategory="110"
@@ -13,4 +14,8 @@
         android:title="@string/AdjacencyDialogue"
         >
     </item>
+    <item
+        android:id="@+id/messengerMI"
+        android:orderInCategory="111"
+        android:title="Open messenger" />
 </menu>

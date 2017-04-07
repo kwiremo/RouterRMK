@@ -29,25 +29,31 @@ public class UIManager implements Observer {
     private Context context;            //context for the UI's sake.
     private TableUI tableUI;
     private SnifferUI snifferUI;
+    private Messenger messenger;
 
     private UIManager() {
         tableUI = new TableUI();
         snifferUI = new SnifferUI();
+        messenger = new Messenger();
     }
 
     //To display on screen. Traditinally called a toast.
-    public  void disPlayMessage(String message, int displayTime){
+    public  void displayMessage(String message, int displayTime){
         Toast.makeText(context, message, displayTime).show();
     }
 
     //To display on screen. Traditinally called a toast.
-    public  void disPlayMessage(String message){
-        disPlayMessage(message, Toast.LENGTH_LONG); // default is long time
+    public  void displayMessage(String message){
+        displayMessage(message, Toast.LENGTH_LONG); // default is long time
     }
 
     //This will be called later. For now it is an empty
     private void setUpWidgets(){
+        messenger.finishCreatingMessenger();
+    }
 
+    public void openMessenger() {
+        messenger.openMessengerWindow();
     }
 
     public TableUI getTableUI() {
@@ -65,7 +71,12 @@ public class UIManager implements Observer {
         }
     }
 
+
     public SnifferUI getSnifferUI() {
         return snifferUI;
+    }
+
+    public Messenger getMessenger() {
+        return messenger;
     }
 }

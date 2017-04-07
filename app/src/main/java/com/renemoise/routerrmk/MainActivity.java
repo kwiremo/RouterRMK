@@ -2,21 +2,13 @@ package com.renemoise.routerrmk;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.renemoise.routerrmk.UI.AddAdjacencyDialog;
 import com.renemoise.routerrmk.network.Constants;
-import com.renemoise.routerrmk.network.daemon.LL1Daemon;
-import com.renemoise.routerrmk.network.datagram_fields.CRC;
-import com.renemoise.routerrmk.network.datagram_fields.DatagramHeaderField;
-import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
-import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
-import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
-import com.renemoise.routerrmk.network.datagrams.Datagram;
-import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
+import com.renemoise.routerrmk.network.daemons.LL1Daemon;
 import com.renemoise.routerrmk.support.BootLoader;
 import com.renemoise.routerrmk.UI.UIManager;
 
@@ -47,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements AddAdjacencyDialo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.showIPAddress){
-            UIManager.getInstance().disPlayMessage("Your IP address is: " + Constants.IP_ADDRESS);
+            UIManager.getInstance().displayMessage("Your IP address is: " + Constants.IP_ADDRESS);
         }
         else if(item.getItemId() == R.id.showAddAdjacencyRecordDialogue){
 
@@ -55,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements AddAdjacencyDialo
             AddAdjacencyDialog adjacencyDialog = new AddAdjacencyDialog();
             adjacencyDialog.show(getFragmentManager(), "Get Adjaceny Addresses: From if Statem.");
 
+        }
+        else if (item.getItemId() == R.id.messengerMI){
+            //Open the messenger.
+            UIManager.getInstance().openMessenger();
         }
         return super.onOptionsItemSelected(item);
     }

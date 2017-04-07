@@ -1,18 +1,16 @@
 package com.renemoise.routerrmk.support;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.util.Log;
 
 import com.renemoise.routerrmk.UI.UIManager;
 import com.renemoise.routerrmk.network.Constants;
-import com.renemoise.routerrmk.network.daemon.ARPDaemon;
-import com.renemoise.routerrmk.network.daemon.LL1Daemon;
-import com.renemoise.routerrmk.network.daemon.LL2Daemon;
-import com.renemoise.routerrmk.network.daemon.LL3Daemon;
-import com.renemoise.routerrmk.network.daemon.LRPDaemon;
-import com.renemoise.routerrmk.network.daemon.Scheduler;
+import com.renemoise.routerrmk.network.daemons.ARPDaemon;
+import com.renemoise.routerrmk.network.daemons.LL1Daemon;
+import com.renemoise.routerrmk.network.daemons.LL2Daemon;
+import com.renemoise.routerrmk.network.daemons.LL3PDaemon;
+import com.renemoise.routerrmk.network.daemons.LRPDaemon;
+import com.renemoise.routerrmk.network.daemons.Scheduler;
 import com.renemoise.routerrmk.network.datagram_fields.CRC;
-import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
 import com.renemoise.routerrmk.network.datagram_fields.TextPayload;
@@ -20,10 +18,7 @@ import com.renemoise.routerrmk.network.datagrams.LL2PFrame;
 import com.renemoise.routerrmk.network.table.Table;
 import com.renemoise.routerrmk.network.tablerecord.AdjacencyRecord;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.util.Observable;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Rene Moise on 1/7/2017.
@@ -57,14 +52,14 @@ public class BootLoader extends Observable {
         addObserver(LL1Daemon.getInstance());
         addObserver(LL2Daemon.getInstance());
         addObserver(Scheduler.getInstance());
-        addObserver(LL3Daemon.getInstance());
+        addObserver(LL3PDaemon.getInstance());
         //testTableProperties();
         addObserver(LRPDaemon.getInstance());
         addObserver(ARPDaemon.getInstance());
         setChanged();       //setChanged marks this observer as has been changed.
         notifyObservers();  // Notify Observers things have changed. Automatically calls the
                             //clearchanged that set the observer as not changed.
-        UIManager.getInstance().disPlayMessage("Now let's roll! RouterRMK is app and running!");
+        UIManager.getInstance().displayMessage("Now let's roll! RouterRMK is app and running!");
         //TEST COMPONENTS
         //testRouterComponents();
 

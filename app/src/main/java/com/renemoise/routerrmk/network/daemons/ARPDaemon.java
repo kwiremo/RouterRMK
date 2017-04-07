@@ -1,8 +1,6 @@
-package com.renemoise.routerrmk.network.daemon;
+package com.renemoise.routerrmk.network.daemons;
 
 import com.renemoise.routerrmk.network.Constants;
-import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
-import com.renemoise.routerrmk.network.datagram_fields.LL3PAddressField;
 import com.renemoise.routerrmk.network.datagrams.ARPDatagram;
 import com.renemoise.routerrmk.network.table.TimedTable;
 import com.renemoise.routerrmk.network.tablerecord.ARPRecord;

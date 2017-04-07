@@ -5,9 +5,9 @@ package com.renemoise.routerrmk.UI;
  */
 
 import com.renemoise.routerrmk.R;
-import com.renemoise.routerrmk.network.daemon.ARPDaemon;
-import com.renemoise.routerrmk.network.daemon.LL1Daemon;
-import com.renemoise.routerrmk.network.daemon.LRPDaemon;
+import com.renemoise.routerrmk.network.daemons.ARPDaemon;
+import com.renemoise.routerrmk.network.daemons.LL1Daemon;
+import com.renemoise.routerrmk.network.daemons.LRPDaemon;
 import com.renemoise.routerrmk.support.ParentActivity;
 
 import java.util.Observable;

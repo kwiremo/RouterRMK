@@ -7,7 +7,6 @@ import com.renemoise.routerrmk.network.datagram_fields.LRPRouteCount;
 import com.renemoise.routerrmk.network.datagram_fields.LRPSequenceNumber;
 import com.renemoise.routerrmk.network.datagram_fields.NetworkDistancePair;
 import com.renemoise.routerrmk.support.Factory;
-import com.renemoise.routerrmk.support.LabException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,12 +79,12 @@ public class LRPDatagram implements Datagram {
 //            sourceLL3P = null;
 //            count = null;
 //            sequenceNumber = null;
-            UIManager.getInstance().disPlayMessage("Sorry! I could not process your LRP frame. \n " +
+            UIManager.getInstance().displayMessage("Sorry! I could not process your LRP frame. \n " +
                     "It is not well formatted!");
             return;
         }
         catch (Exception e){
-            UIManager.getInstance().disPlayMessage("An eror occurred when parsing the LRP frame.");
+            UIManager.getInstance().displayMessage("An eror occurred when parsing the LRP frame.");
             //return;
         }
     }

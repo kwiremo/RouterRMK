@@ -8,10 +8,7 @@ import com.renemoise.routerrmk.network.datagram_fields.CRC;
 import com.renemoise.routerrmk.network.datagram_fields.DatagramPayloadField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PAddressField;
 import com.renemoise.routerrmk.network.datagram_fields.LL2PTypeField;
-import com.renemoise.routerrmk.network.datagram_fields.LL3PAddressField;
 import com.renemoise.routerrmk.support.Factory;
-
-import java.io.Console;
 
 /**
  * Created by Rene Moise on 1/22/2017.
@@ -83,7 +80,7 @@ public class LL2PFrame implements Datagram {
                             CRC_Offset + Constants.LL2P_CRC_FIELD_LENGTH * 2));
         }
         catch (Exception e){
-            UIManager.getInstance().disPlayMessage("Could not process the received packet.");
+            UIManager.getInstance().displayMessage("Could not process the received packet.");
         }
     }
 
